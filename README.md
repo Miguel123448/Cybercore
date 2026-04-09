@@ -25,13 +25,14 @@ Você é um analista de segurança da CyberCore. Um ataque hacker está injetand
 
 ### Quadro Kanban
 
-![Kanban completo](docs/kanban.png)
+![Kanban completo](./assets/kanban.png)
 
 A coluna **Backlog** contém as 10 histórias priorizadas (da mais prioritária no topo para a menos prioritária na base). As demais colunas (A Fazer, Em andamento, Revisão, Concluído) serão preenchidas durante o desenvolvimento.
 
 ### Backlog priorizado
 
-![Backlog priorizado](docs/backlog.png)
+![Backlog priorizado - parte 1](./assets/backlog-1.png)
+![Backlog priorizado - parte 2](./assets/backlog-2.png)
 
 A ordem atual é:
 
@@ -50,11 +51,10 @@ Cada história segue o **padrão 3Cs** (Card, Conversation, Confirmation) e poss
 
 ### Histórias de usuário (detalhadas)
 
-As 10 histórias completas estão disponíveis no [quadro do Trello](https://trello.com/...) e também no arquivo [`historias.md`](docs/historias.md).
+As 10 histórias completas estão disponíveis no [quadro do Trello](https://trello.com/b/MNMd59kf/kanban-projeto-interno) e também no arquivo [`historias.md`](docs/historias.md).
 
 ## 🚀 Próximas etapas
 
-- **Entrega 02:** Protótipos Lo-Fi no Figma, screencast e diagramas de atividades para cada história.
 - **Entrega 03:** Implementação do jogo, persistência e estatísticas.
 - **Entrega 04:** Projeto final polido, testes e documentação.
 
