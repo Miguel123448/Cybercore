@@ -1,3 +1,7 @@
+# Atalhos
+- [Requesitos PIF](https://github.com/renanalencar/pif-2026-1-desc?tab=readme-ov-file#vis%C3%A3o-geral)
+- [Entregas FDS](https://drive.google.com/file/d/1BAMUIo1b_WoI1TR8rMUF-cdp-Rh9lb6P/view)
+
 # 🕹️ Jogo de Adivinhação – Decodificação de Frequência: Contra-ataque Hacker
 
 Projeto Integrador 2026.1 – Programação Imperativa e Funcional (PIF)  
@@ -61,7 +65,7 @@ As 10 histórias completas estão disponíveis no [quadro do Trello](https://tre
 ## 📚 Tecnologias
 
 - Linguagem C (padrão C11)
-- Biblioteca padrão: `stdio.h`, `stdlib.h`, `time.h`, `math.h`
+- Biblioteca padrão: `stdio.h`, `stdlib.h`, `time.h`, `math.h` `raylib.h`
 - Persistência em arquivo texto (`historico.txt`)
 - Compilação: `gcc -std=c11 -Wall -lm -o jogo main.c`
 
