@@ -1,3 +1,7 @@
+# Atalhos
+- [Requesitos PIF](https://github.com/renanalencar/pif-2026-1-desc?tab=readme-ov-file#vis%C3%A3o-geral)
+- [Entregas FDS](https://drive.google.com/file/d/1BAMUIo1b_WoI1TR8rMUF-cdp-Rh9lb6P/view)
+
 # 🕹️ Jogo de Adivinhação – Decodificação de Frequência: Contra-ataque Hacker
 
 Projeto Integrador 2026.1 – Programação Imperativa e Funcional (PIF)  
@@ -27,7 +31,7 @@ Você é um analista de segurança da CyberCore. Um ataque hacker está injetand
 
 ![Kanban completo](./assets/kanban.png)
 
-A coluna **Backlog** contém as 10 histórias priorizadas (da mais prioritária no topo para a menos prioritária na base). As demais colunas (A Fazer, Em andamento, Revisão, Concluído) serão preenchidas durante o desenvolvimento.
+A coluna **Backlog** contém as 11 histórias priorizadas (da mais prioritária no topo para a menos prioritária na base). As demais colunas (A Fazer, Em andamento, Revisão, Concluído) serão preenchidas durante o desenvolvimento.
 
 ### Backlog priorizado
 
@@ -52,7 +56,7 @@ Cada história segue o **padrão 3Cs** (Card, Conversation, Confirmation) e poss
 
 ### Histórias de usuário (detalhadas)
 
-As 10 histórias completas estão disponíveis no [quadro do Trello](https://trello.com/b/MNMd59kf/kanban-projeto-interno) e também no arquivo [`historias.md`](docs/historias.md).
+As 11 histórias completas estão disponíveis no [quadro do Trello](https://trello.com/b/MNMd59kf/kanban-projeto-interno) e também no arquivo [`historias.md`](docs/historias.md).
 
 ## 🚀 Próximas etapas
 
@@ -62,7 +66,7 @@ As 10 histórias completas estão disponíveis no [quadro do Trello](https://tre
 ## 📚 Tecnologias
 
 - Linguagem C (padrão C11)
-- Biblioteca padrão: `stdio.h`, `stdlib.h`, `time.h`, `math.h`
+- Biblioteca padrão: `stdio.h`, `stdlib.h`, `time.h`, `math.h` `raylib.h`
 - Persistência em arquivo texto (`historico.txt`)
 - Compilação: `gcc -std=c11 -Wall -lm -o jogo main.c`
 
