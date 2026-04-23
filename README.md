@@ -51,13 +51,13 @@ Abaixo estão os esboços manuais e a sequência narrativa das principais intera
 | **UH1** | ![UH1 Sketch](./assets/sketches/uh1.png) |
 | **UH2** | ![UH2 Sketch](./assets/sketches/uh2.png) |
 | **UH3** | ![UH3 Sketch](./assets/sketches/uh3.png) |
-| **UH4** | ![UH3 Sketch](./assets/sketches/uh3.png) |
-| **UH5** | ![UH3 Sketch](./assets/sketches/uh3.png) |
-| **UH6** | ![UH3 Sketch](./assets/sketches/uh3.png) |
-| **UH7** | ![UH3 Sketch](./assets/sketches/uh3.png) |
-| **UH8** | ![UH3 Sketch](./assets/sketches/uh3.png) |
-| **UH9** | ![UH3 Sketch](./assets/sketches/uh3.png) |
-| **UH10** | ![UH3 Sketch](./assets/sketches/uh3.png) |
+| **UH4** | ![UH4 Sketch](./assets/sketches/uh4.png) |
+| **UH5** | ![UH5 Sketch](./assets/sketches/uh5.png) |
+| **UH6** | ![UH6 Sketch](./assets/sketches/uh6.png) |
+| **UH7** | ![UH7 Sketch](./assets/sketches/uh7.png) |
+| **UH8** | ![UH8 Sketch](./assets/sketches/uh8.png) |
+| **UH9** | ![UH9 Sketch](./assets/sketches/uh9.png) |
+| **UH10** | ![UH10 Sketch](./assets/sketches/uh10.png) |
 
 > *Nota: Todos os arquivos também estão anexados aos seus respectivos cards no Trello.*
 
