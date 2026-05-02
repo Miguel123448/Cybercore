@@ -26,7 +26,7 @@ int lerArquivo(FormatoHistorico *structHistorico);
 void salvarPartida(FormatoHistorico partida);
 
 int main() {
-    InitWindow(800, 600, "Menu Raylib");
+    InitWindow(1280, 720, "Menu Raylib");
     SetTargetFPS(60);
 
     GameState estado = MENU;
@@ -69,11 +69,8 @@ int main() {
             }
 
         } else if (estado == JOGO) {
-            DrawText("JOGO RODANDO!", 280, 280, 30, GREEN);
+            DrawText("Voltar ao Menu", 100, 100, 30, DARKGRAY);
 
-            if (IsKeyPressed(KEY_ESCAPE)) {
-                estado = MENU;
-            }
         }
 
         EndDrawing();
