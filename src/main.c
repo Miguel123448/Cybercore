@@ -33,13 +33,16 @@ int main() {
     GameState estado = MENU;
     int menuOpcaoSelecionada = 0;
     int totalOpcoes = 3;
+    const char *opcoes[3] = {"Iniciar Jogo","Estatísticas","Sair"};
 
+    //variaveis referente a caixa de entrada do jogo
     char inputTexto[50] = "";
     int inputTamanho = 0;
     bool inputAtivo = false;
     Rectangle inputBox = {100, 200, 300, 40};
-
-    const char *opcoes[3] = {"Iniciar Jogo","Estatísticas","Sair"};
+    
+    int numeroAlvo; //variavel gerada que ser ao alvo
+    char mensagem[50] = "Digite um número";
 
     while (!WindowShouldClose()) {
 
@@ -75,6 +78,7 @@ int main() {
             }
 
         } else if (estado == JOGO) {
+            numeroAlvo = gerarNumeroAleatorio();
             Rectangle botao = {100, 100, 250, 40};
             bool hover = CheckCollisionPointRec(GetMousePosition(), botao);
             Color cor = hover ? RED : DARKGRAY;
@@ -96,11 +100,13 @@ int main() {
                 int tecla = GetCharPressed();
 
                 while (tecla > 0) {
-                    if (inputTamanho < 49) {
-                        inputTexto[inputTamanho] = (char)tecla;
-                        inputTamanho++;
-                        inputTexto[inputTamanho] = '\0';
-                    }
+                    if (tecla >= '0' && tecla <= '9'){      //so aceita numeros
+                        if (inputTamanho < 2) {
+                            inputTexto[inputTamanho] = (char)tecla;
+                            inputTamanho++;
+                            inputTexto[inputTamanho] = '\0';
+                        }
+                }
                     tecla = GetCharPressed();
                 }
 
@@ -110,6 +116,15 @@ int main() {
                         inputTamanho--;
                         inputTexto[inputTamanho] = '\0';
                     }
+                }
+                    // Enter para confirmar
+                if (IsKeyPressed(KEY_ENTER) && inputTamanho > 0) {
+                    // converter para int
+                    int valor = atoi(inputTexto);
+                    printf("Numero digitado: %d\n", valor);
+                    // (opcional) limpar input
+                    inputTamanho = 0;
+                    inputTexto[0] = '\0';
                 }
             }
             // Caixa
@@ -124,6 +139,7 @@ int main() {
                     DrawText("Digite um número...", inputBox.x + 10, inputBox.y + 10, 20, GRAY);
                 }
 
+                // Cursor piscando
                 if (inputAtivo && ((int)(GetTime() * 2) % 2 == 0)) {
                     int larguraTexto = MeasureText(inputTexto, 20);
                     DrawText("|",inputBox.x + 10 + larguraTexto, inputBox.y + 10,20,BLACK);
