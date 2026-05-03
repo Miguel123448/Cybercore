@@ -43,6 +43,7 @@ int main() {
     
     int numeroAlvo; //variavel gerada que ser ao alvo
     char mensagem[50] = "Digite um número";
+    Color corMsg;
 
     while (!WindowShouldClose()) {
 
@@ -55,7 +56,10 @@ int main() {
             if (menuOpcaoSelecionada >= totalOpcoes) menuOpcaoSelecionada = 0;
 
             if (IsKeyPressed(KEY_ENTER)) {
-                if (menuOpcaoSelecionada == 0) estado = JOGO;
+                if (menuOpcaoSelecionada == 0){ 
+                    estado = JOGO;
+                    numeroAlvo = gerarNumeroAleatorio();
+                }
                 if (menuOpcaoSelecionada == 1) estado = ESTATISTICAS;
                 if (menuOpcaoSelecionada == 2) estado = SAIR;
             }
@@ -78,7 +82,6 @@ int main() {
             }
 
         } else if (estado == JOGO) {
-            numeroAlvo = gerarNumeroAleatorio();
             Rectangle botao = {100, 100, 250, 40};
             bool hover = CheckCollisionPointRec(GetMousePosition(), botao);
             Color cor = hover ? RED : DARKGRAY;
@@ -119,15 +122,26 @@ int main() {
                 }
                     // Enter para confirmar
                 if (IsKeyPressed(KEY_ENTER) && inputTamanho > 0) {
-                    // converter para int
                     int valor = atoi(inputTexto);
-                    printf("Numero digitado: %d\n", valor);
-                    // (opcional) limpar input
+                    if (valor > numeroAlvo) {
+                        strcpy(mensagem, "Muito alto!");
+                        corMsg = RED;
+                    }
+                    else if (valor < numeroAlvo) {
+                        strcpy(mensagem, "Muito baixo!");
+                        corMsg = BLUE;
+                    }
+                    else {
+                        strcpy(mensagem, "Acertou!");
+                        corMsg = GREEN;
+                    }
+                    // limpa input
                     inputTamanho = 0;
                     inputTexto[0] = '\0';
                 }
             }
-            // Caixa
+                DrawText(mensagem, inputBox.x, inputBox.y - 40, 20, corMsg);    //mensagem de "alto/baixo/acerto"
+                // Caixa
                 DrawRectangleRec(inputBox, LIGHTGRAY);
                 DrawRectangleLinesEx(inputBox, 2, inputAtivo ? BLUE : DARKGRAY);
 
