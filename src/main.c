@@ -198,8 +198,11 @@ int lerArquivo(FormatoHistorico *structHistorico){
         }
 
         // aloca memória para os palpites
-        structHistorico[i].palpites =
-            malloc(structHistorico[i].tentativas * sizeof(int));
+        structHistorico[i].palpites = malloc(structHistorico[i].tentativas * sizeof(int));
+        if (structHistorico[i].palpites == NULL) {
+            printf("Erro de memória\n");
+            break;
+        }
 
         // separa CSV dos palpites
         char *token = strtok(palpitesStr, ",");
