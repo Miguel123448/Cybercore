@@ -161,8 +161,13 @@ int main() {
     }
 
         EndDrawing();
-    }
+    } 
 
+    /*for (int i = 0; i < total; i++) {
+        free(structHistorico[i].palpites);
+    }
+       LEMBRAR DE DAR FREE NOS PONTEIROS NO FINAL DO CODIGO 
+    */
     CloseWindow();
     return 0;
 }
