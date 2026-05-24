@@ -1,61 +1,25 @@
-/* =========================================================
-   include/sudoku.h
-   ========================================================= */
-
-#ifndef SUDOKU_H
-#define SUDOKU_H
+#ifndef CYBERCORE_SUDOKU_H
+#define CYBERCORE_SUDOKU_H
 
 #include <stdbool.h>
 
-#define SIZE 4
-
-typedef enum {
-
-    FACIL = 1,
-    MEDIO,
-    DIFICIL
-
-} Dificuldade;
+#define SUDOKU_SIZE 4
 
 typedef struct {
-
-    int board[SIZE][SIZE];
-
-    int original[SIZE][SIZE];
-
+    int board[SUDOKU_SIZE][SUDOKU_SIZE];
+    int original[SUDOKU_SIZE][SUDOKU_SIZE];
+    int solution[SUDOKU_SIZE][SUDOKU_SIZE];
     int selectedRow;
-
     int selectedCol;
-
-    int erros;
-
-    int maxErros;
-
-    bool erroMaximo;
-
-    bool completo;
-
-    int blocoAtual;
-
-    Dificuldade dificuldade;
-
+    int errors;
+    int emptyCells;
+    bool completed;
+    char message[128];
 } SudokuGame;
 
-void InitSudoku(
-    SudokuGame *game,
-    Dificuldade dificuldade
-);
-
-void UpdateSudoku(
-    SudokuGame *game
-);
-
-void DrawSudoku(
-    SudokuGame *game
-);
-
-bool SudokuCompleto(
-    SudokuGame *game
-);
+void Sudoku_Init(SudokuGame *game);
+void Sudoku_Update(SudokuGame *game);
+void Sudoku_Draw(const SudokuGame *game);
+bool Sudoku_IsCompleted(const SudokuGame *game);
 
 #endif
