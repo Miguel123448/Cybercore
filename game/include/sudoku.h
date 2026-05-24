@@ -1,5 +1,5 @@
-#ifndef CYBERCORE_SUDOKU_H
-#define CYBERCORE_SUDOKU_H
+#ifndef DIA_ZERO_SUDOKU_H
+#define DIA_ZERO_SUDOKU_H
 
 #include <stdbool.h>
 

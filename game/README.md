@@ -1,4 +1,4 @@
-# CyberCore - Quebra de Frequencia
+# Dia Zero - Quebra de Frequencia
 
 Versao em C com Raylib usando uma interface inspirada em sistemas antigos: janelas cinza estilo Windows 95/98, barras azuis, fundo de chuva digital verde, paineis de cronometro, status do sistema e pistas coletadas.
 
@@ -26,63 +26,3 @@ O historico e salvo em `historico.txt` no formato:
 
 ```txt
 timestamp;alvo;tentativas;baixos;altos;palpites_csv
-```
-
-A tela de historico calcula:
-
-- total de sessoes;
-- media de tentativas;
-- melhor e pior sessao;
-- desvio padrao;
-- vies medio para baixo e para cima;
-- sugestoes de estrategia.
-
-As funcoes analiticas usam recursao para soma, minimo, maximo, soma dos quadrados das diferencas, vies e passos monotonicamente ordenados.
-
-## Como compilar no Windows
-
-Entre na pasta `game` e rode:
-
-```bat
-compilar.bat
-```
-
-Ou compile manualmente:
-
-```bat
-gcc -std=c11 -Wall -Wextra -Iinclude src/main.c src/sudoku.c src/history.c -o Jogo.exe -Llib -lraylib -lopengl32 -lgdi32 -lwinmm -lm
-```
-
-Se aparecer que `gcc` nao e reconhecido, instale o MinGW/MSYS2 e adicione o caminho do GCC ao `PATH` do Windows.
-
-## Como jogar
-
-- **Menu**: `ENTER` inicia, `H` abre historico, `C` abre instrucoes, `ESC` sai.
-- **Sudoku**: setas ou mouse selecionam celulas; `1-4` preenche; `Backspace` ou `0` apaga.
-- **Logica**: clique em uma alternativa ou use `1-4`.
-- **Chute**: digite a frequencia, use `Backspace` para apagar e `ENTER` ou o botao `Confirmar` para testar.
-
-## Estrutura
-
-```txt
-game/
-  include/
-    game.h
-    history.h
-    sudoku.h
-    raylib.h
-  src/
-    main.c
-    sudoku.c
-    history.c
-  lib/
-    libraylib.a
-  Makefile
-  compilar.bat
-```
-
-## Atualização visual
-
-Esta versão usa o arquivo `assets/background/36030.gif` como fundo animado do CyberCore. Caso o GIF não seja encontrado, o jogo volta automaticamente para o fundo procedural antigo em estilo Matrix.
-
-A tela inicial também foi ajustada para melhorar o espaçamento entre `CyberCore` e `Quebra de Frequência`, e o texto do painel superior esquerdo foi reposicionado para permanecer dentro do quadro.

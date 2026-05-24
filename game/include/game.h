@@ -1,5 +1,5 @@
-#ifndef CYBERCORE_GAME_H
-#define CYBERCORE_GAME_H
+#ifndef DIA_ZERO_GAME_H
+#define DIA_ZERO_GAME_H
 
 #include <stdbool.h>
 #include "history.h"
@@ -50,12 +50,12 @@ typedef struct {
     bool saved;
     int score;
     char rating[64];
-} CyberGame;
+} DiaZeroGame;
 
-void Game_Init(CyberGame *game);
-void Game_UnlockHint(CyberGame *game, int index);
-void Game_HandleGuess(CyberGame *game);
-void Game_CalculateScore(CyberGame *game, int sudokuErrors);
-SessionRecord Game_ToSession(const CyberGame *game);
+void Game_Init(DiaZeroGame *game);
+void Game_UnlockHint(DiaZeroGame *game, int index);
+void Game_HandleGuess(DiaZeroGame *game);
+void Game_CalculateScore(DiaZeroGame *game, int sudokuErrors);
+SessionRecord Game_ToSession(const DiaZeroGame *game);
 
 #endif

@@ -185,7 +185,7 @@ static void DrawHeaderPanel(void) {
     DrawRectangleLines(38, 42, 40, 40, CYBER_GREEN);
     DrawText("<>_", 40, 54, 20, CYBER_GREEN);
 
-    DrawText("CyberCore", 108, 34, 42, CYBER_GREEN);
+    DrawText("Dia Zero", 108, 34, 42, CYBER_GREEN);
     DrawText("QUEBRA DE FREQUENCIA", 111, 88, 19, CYBER_GREEN);
     DrawRectangleLines(36, 111, 342, 48, CYBER_DARK_GREEN);
     DrawText("Resolva desafios. Colete pistas.", 48, 121, 15, CYBER_GREEN);
@@ -203,10 +203,10 @@ static void DrawTimerWindow(double startTime) {
     int minutes = elapsed / 60;
     int seconds = elapsed % 60;
     DrawText(TextFormat("%02d:%02d", minutes, seconds), 102, 267, 34, CYBER_GREEN);
-    DrawText("Tempo de invasao", 88, 318, 15, CYBER_GREEN);
+    DrawText("Tempo de defesa", 88, 318, 15, CYBER_GREEN);
 }
 
-static void DrawSystemWindow(const CyberGame *game, Screen screen) {
+static void DrawSystemWindow(const DiaZeroGame *game, Screen screen) {
     Rectangle r = {18, 602, 318, 136};
     DrawClassicWindow(r, "Sistema");
     DrawRectangleLines(44, 651, 52, 38, CYBER_GREEN);
@@ -227,22 +227,22 @@ static void DrawSystemWindow(const CyberGame *game, Screen screen) {
     DrawRectangle(116, 711, (int)(176 * (freq / 100.0f)), 13, CYBER_GREEN);
 }
 
-static void DrawGlobalDesktop(const CyberGame *game, Screen screen) {
+static void DrawGlobalDesktop(const DiaZeroGame *game, Screen screen) {
     DrawMatrixBackground();
     DrawHeaderPanel();
     DrawTimerWindow(gMatchStartTime);
     DrawSystemWindow(game, screen);
     DrawRectangleLines(1235, 713, 112, 32, CYBER_DARK_GREEN);
-    DrawText("v2.0 - CyberCore OS", 1243, 724, 12, CYBER_GREEN);
+    DrawText("v2.0 - Dia Zero OS", 1243, 724, 12, CYBER_GREEN);
 }
 
-void Game_UnlockHint(CyberGame *game, int index) {
+void Game_UnlockHint(DiaZeroGame *game, int index) {
     if (index >= 0 && index < game->totalHints) {
         game->hintUnlocked[index] = true;
     }
 }
 
-void Game_Init(CyberGame *game) {
+void Game_Init(DiaZeroGame *game) {
     memset(game, 0, sizeof(*game));
 
     game->secretNumber = (rand() % 100) + 1;
@@ -298,7 +298,7 @@ void Game_Init(CyberGame *game) {
     snprintf(game->feedback, sizeof(game->feedback), "Use as pistas para reduzir o intervalo de busca.");
 }
 
-void Game_HandleGuess(CyberGame *game) {
+void Game_HandleGuess(DiaZeroGame *game) {
     int guess = game->guessInput;
 
     if (guess < 1 || guess > 100) {
@@ -323,8 +323,9 @@ void Game_HandleGuess(CyberGame *game) {
     }
 }
 
-void Game_CalculateScore(CyberGame *game, int sudokuErrors) {
+void Game_CalculateScore(DiaZeroGame *game, int sudokuErrors) {
     int score = 1000;
+
     score -= sudokuErrors * 40;
     score -= game->logicErrors * 70;
     score -= game->attempts * 25;
@@ -335,19 +336,74 @@ void Game_CalculateScore(CyberGame *game, int sudokuErrors) {
     game->score = ClampInt(score, 0, 1000);
 
     if (game->score >= 900) {
-        snprintf(game->rating, sizeof(game->rating), "Hacker Lendario");
+        snprintf(game->rating, sizeof(game->rating), "Guardiao do Dia Zero");
     } else if (game->score >= 750) {
-        snprintf(game->rating, sizeof(game->rating), "Invasor Avancado");
+        snprintf(game->rating, sizeof(game->rating), "Especialista em Defesa");
     } else if (game->score >= 500) {
-        snprintf(game->rating, sizeof(game->rating), "Operador de Rede");
+        snprintf(game->rating, sizeof(game->rating), "Analista de Rede");
     } else if (game->score >= 300) {
-        snprintf(game->rating, sizeof(game->rating), "Aprendiz Digital");
+        snprintf(game->rating, sizeof(game->rating), "Tecnico em Seguranca");
     } else {
-        snprintf(game->rating, sizeof(game->rating), "Acesso Quase Negado");
+        snprintf(game->rating, sizeof(game->rating), "Sistema Comprometido");
     }
+
+    const int screenWidth = GetScreenWidth();
+
+    const int titleFont = 48;
+    const int textFont = 24;
+
+    const char *title = "SISTEMA PROTEGIDO";
+
+    char line1[128];
+    char line2[128];
+    char line3[128];
+    char line4[128];
+    char line5[128];
+
+    snprintf(line1, sizeof(line1), "Frequencia central: %d", 26);
+    snprintf(line2, sizeof(line2), "Tentativas no rastreio: %d", game->attempts);
+    snprintf(line3, sizeof(line3), "Nivel de Seguranca: %d", game->score);
+    snprintf(line4, sizeof(line4), "Erros no Sudoku: %d | Erros na logica: %d", sudokuErrors, game->logicErrors);
+    snprintf(line5, sizeof(line5), "Classe: %s", game->rating);
+
+    DrawText(title,
+             (screenWidth - MeasureText(title, titleFont)) / 2,
+             60,
+             titleFont,
+             GREEN);
+
+    DrawText(line1,
+             (screenWidth - MeasureText(line1, textFont)) / 2,
+             150,
+             textFont,
+             GREEN);
+
+    DrawText(line2,
+             (screenWidth - MeasureText(line2, textFont)) / 2,
+             190,
+             textFont,
+             GREEN);
+
+    DrawText(line3,
+             (screenWidth - MeasureText(line3, textFont)) / 2,
+             230,
+             textFont,
+             YELLOW);
+
+    DrawText(line4,
+             (screenWidth - MeasureText(line4, textFont)) / 2,
+             270,
+             textFont,
+             GREEN);
+
+    DrawText(line5,
+             (screenWidth - MeasureText(line5, textFont)) / 2,
+             310,
+             textFont,
+             GREEN);
 }
 
-SessionRecord Game_ToSession(const CyberGame *game) {
+SessionRecord Game_ToSession(const DiaZeroGame *game) {
     SessionRecord session;
     memset(&session, 0, sizeof(session));
 
@@ -374,7 +430,7 @@ SessionRecord Game_ToSession(const CyberGame *game) {
     return session;
 }
 
-static void DrawHintsWindow(const CyberGame *game, Rectangle r, const char *title) {
+static void DrawHintsWindow(const DiaZeroGame *game, Rectangle r, const char *title) {
     DrawClassicWindow(r, title);
     DrawText("Pistas coletadas", (int)r.x + 22, (int)r.y + 48, 20, TEXT_DARK);
     int rowY = (int)r.y + 82;
@@ -399,34 +455,47 @@ static Rectangle MenuButtonRect(int index) {
 static void DrawMenu(void) {
     Rectangle win = {470, 178, 440, 455};
     DrawClassicWindow(win, "Controle de Acesso");
-    DrawText("CyberCore", 548, 238, 44, TEXT_DARK);
-    DrawText("Quebra de Frequencia", 555, 302, 20, CYBER_DARK_GREEN);
 
-    DrawClassicButton(MenuButtonRect(0), "Iniciar ataque", false, false);
+    const char *titulo = "Dia Zero";
+    int fontSize = 44;
+    int textWidth = MeasureText(titulo, fontSize);
+    int centerX = (int)(win.x + win.width / 2);
+    DrawText(titulo, centerX - (textWidth / 2), 238, fontSize, TEXT_DARK);
+
+    const char *subtitulo = "Protocolo de Defesa";
+    int subFontSize = 20;
+    int subWidth = MeasureText(subtitulo, subFontSize);
+    DrawText(subtitulo, centerX - (subWidth / 2), 302, subFontSize, CYBER_DARK_GREEN);
+
+    DrawClassicButton(MenuButtonRect(0), "Iniciar defesa", false, false);
     DrawClassicButton(MenuButtonRect(1), "Historico e analise", false, false);
     DrawClassicButton(MenuButtonRect(2), "Como jogar", false, false);
     DrawClassicButton(MenuButtonRect(3), "Sair", false, false);
 
     DrawText("Fluxo: Sudoku -> Logica -> Chute", 515, 595, 17, DARKGRAY);
 }
-
 static void DrawIntro(void) {
     Rectangle win = {430, 185, 760, 390};
-    DrawClassicWindow(win, "Briefing da Missao");
-    DrawText("MISSAO: INVADIR O CYBERCORE", 485, 242, 30, TEXT_DARK);
+    DrawClassicWindow(win, "Protocolo de Defesa");
+    
+    DrawText("MISSAO: DEFENDER O DIA ZERO", 485, 242, 30, TEXT_DARK);
+    
     DrawClassicInset((Rectangle){478, 295, 660, 168}, BLACK);
+    
     DrawWrappedText(
-        "O CyberCore protege sua frequencia central com tres camadas. Primeiro, estabilize uma matriz Sudoku 4x4. Depois, interprete o firewall proposicional. Por fim, use as pistas para descobrir a frequencia secreta entre 1 e 100.",
+        "O Dia Zero esta sob ataque! Proteja a frequencia central estabilizando a matriz Sudoku, "
+        "reconfigurando o firewall logico e bloqueando as tentativas de intrusao atraves "
+        "do rastreio da frequencia secreta.",
         505, 322, 21, 605, CYBER_GREEN
     );
-    DrawClassicButton((Rectangle){572, 492, 470, 52}, "Pressione ENTER para iniciar", false, false);
-}
 
+    DrawClassicButton((Rectangle){572, 492, 470, 52}, "Pressione ENTER para iniciar defesa", false, false);
+}
 static Rectangle LogicOptionRect(int i) {
     return (Rectangle){565, 340 + i * 58, 690, 42};
 }
 
-static void DrawLogicScreen(CyberGame *game) {
+static void DrawLogicScreen(DiaZeroGame *game) {
     Rectangle win = {515, 108, 800, 520};
     DrawClassicWindow(win, "Fase 2 - Raciocinio Logico");
 
@@ -454,7 +523,7 @@ static void DrawLogicScreen(CyberGame *game) {
     DrawHintsWindow(game, (Rectangle){42, 365, 395, 265}, "Pistas do Firewall");
 }
 
-static void UpdateLogicScreen(CyberGame *game, Screen *screen) {
+static void UpdateLogicScreen(DiaZeroGame *game, Screen *screen) {
     LogicQuestion *question = &game->questions[game->currentQuestion];
 
     if (!question->answered) {
@@ -485,7 +554,7 @@ static void UpdateLogicScreen(CyberGame *game, Screen *screen) {
     }
 }
 
-static void DrawGuessScreen(const CyberGame *game) {
+static void DrawGuessScreen(const DiaZeroGame *game) {
     Rectangle win = {390, 245, 880, 415};
     DrawClassicWindow(win, "Fase 3 - Quebra de Frequencia");
 
@@ -515,7 +584,7 @@ static void DrawGuessScreen(const CyberGame *game) {
     DrawText(TextFormat("Tentativas: %d | Baixos: %d | Altos: %d", game->attempts, game->lows, game->highs), 897, 597, 17, CYBER_DARK_GREEN);
 }
 
-static void UpdateGuessScreen(CyberGame *game, Screen *screen, int sudokuErrors) {
+static void UpdateGuessScreen(DiaZeroGame *game, Screen *screen, int sudokuErrors) {
     int key = GetCharPressed();
     while (key > 0) {
         int len = (int)strlen(gGuessText);
@@ -549,21 +618,20 @@ static void UpdateGuessScreen(CyberGame *game, Screen *screen, int sudokuErrors)
     }
 }
 
-static void DrawResultScreen(const CyberGame *game, const SudokuGame *sudoku) {
+static void DrawResultScreen(const DiaZeroGame *game, const SudokuGame *sudoku) {
     Rectangle win = {420, 150, 760, 455};
-    DrawClassicWindow(win, "Resultado da Invasao");
-    DrawText("ACESSO CONCEDIDO", 520, 210, 44, CYBER_DARK_GREEN);
+    DrawClassicWindow(win, "Resultado da Defesa");
+    DrawText("SISTEMA PROTEGIDO", 520, 210, 44, CYBER_DARK_GREEN); 
     DrawClassicInset((Rectangle){490, 278, 620, 220}, BLACK);
-    DrawText(TextFormat("Frequencia descoberta: %d", game->secretNumber), 525, 305, 24, CYBER_GREEN);
-    DrawText(TextFormat("Tentativas no chute: %d", game->attempts), 525, 345, 22, CYBER_GREEN);
+    DrawText(TextFormat("Frequencia central: %d", game->secretNumber), 525, 305, 24, CYBER_GREEN);
+    DrawText(TextFormat("Tentativas no rastreio: %d", game->attempts), 525, 345, 22, CYBER_GREEN);
     DrawText(TextFormat("Erros no Sudoku: %d", sudoku->errors), 525, 383, 22, CYBER_GREEN);
     DrawText(TextFormat("Erros na logica: %d", game->logicErrors), 525, 421, 22, CYBER_GREEN);
-    DrawText(TextFormat("Pontuacao final: %d", game->score), 815, 345, 25, GOLD);
+    DrawText(TextFormat("Nivel de seguranca: %d", game->score), 815, 345, 25, GOLD);
     DrawText(TextFormat("Classe: %s", game->rating), 815, 388, 21, CYBER_GREEN);
     DrawClassicButton((Rectangle){535, 525, 260, 46}, "ENTER - Menu", false, false);
     DrawClassicButton((Rectangle){825, 525, 260, 46}, "H - Historico", false, false);
 }
-
 static void DrawHistoryScreen(void) {
     SessionRecord sessions[MAX_SESSIONS];
     int count = History_LoadSessions(sessions, MAX_SESSIONS);
@@ -571,7 +639,7 @@ static void DrawHistoryScreen(void) {
 
     Rectangle win = {400, 110, 885, 535};
     DrawClassicWindow(win, "Historico e Analise");
-    DrawText("RELATORIO DO CYBERCORE", 440, 168, 30, TEXT_DARK);
+    DrawText("RELATORIO DO DIA ZERO", 440, 168, 30, TEXT_DARK);
 
     if (count <= 0) {
         DrawClassicInset((Rectangle){440, 230, 785, 200}, BLACK);
@@ -589,7 +657,7 @@ static void DrawHistoryScreen(void) {
         DrawText(TextFormat("Vies medio alto: %.1f%%", report.averageHighBias * 100.0), 860, 285, 20, CYBER_GREEN);
         DrawWrappedText(TextFormat("Passos monotonicos: %d", report.monotonicSteps), 860, 325, 20, 340, CYBER_GREEN);
 
-        DrawText("Sugestao do CyberCore:", 440, 520, 22, TEXT_DARK);
+        DrawText("Sugestao do sistema:", 440, 520, 22, TEXT_DARK);
         DrawWrappedText(report.suggestion, 440, 555, 19, 770, CYBER_DARK_GREEN);
     }
     DrawClassicButton((Rectangle){694, 598, 300, 36}, "ENTER/H - voltar", false, false);
@@ -606,7 +674,7 @@ static void DrawHelpScreen(void) {
     DrawClassicButton((Rectangle){690, 585, 300, 42}, "ENTER - voltar", false, false);
 }
 
-static void StartNewGame(CyberGame *game, SudokuGame *sudoku, Screen *screen) {
+static void StartNewGame(DiaZeroGame *game, SudokuGame *sudoku, Screen *screen) {
     Game_Init(game);
     Sudoku_Init(sudoku);
     gMatchStartTime = GetTime();
@@ -617,7 +685,7 @@ static void StartNewGame(CyberGame *game, SudokuGame *sudoku, Screen *screen) {
 int main(void) {
     srand((unsigned int)time(NULL));
 
-    InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "CyberCore - Quebra de Frequencia");
+    InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Dia Zero - Quebra de Frequencia");
     SetTargetFPS(60);
 
     const char *backgroundPath = "assets/background/36030.gif";
@@ -642,7 +710,7 @@ int main(void) {
 
     Screen screen = SCREEN_MENU;
     bool exitRequested = false;
-    CyberGame game;
+    DiaZeroGame game;
     SudokuGame sudoku;
     Game_Init(&game);
     Sudoku_Init(&sudoku);

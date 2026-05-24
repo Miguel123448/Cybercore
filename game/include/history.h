@@ -1,5 +1,5 @@
-#ifndef CYBERCORE_HISTORY_H
-#define CYBERCORE_HISTORY_H
+#ifndef DIA_ZERO_HISTORY_H
+#define DIA_ZERO_HISTORY_H
 
 #include <stdbool.h>
 
