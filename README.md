@@ -130,9 +130,7 @@ A **Sprint 01** foi criada no Board do Trello para organizar as histórias, bugs
 
 **Print da Sprint 01 no Board:**  
 
-```md
 ![Sprint 01 no Board](./assets/entrega03/sprint-01-board.png)
-```
 
 ---
 
@@ -160,9 +158,7 @@ O quadro da Sprint 01 foi atualizado para refletir o estado da Entrega 03, inclu
 
 **Print do quadro da sprint atualizado:**
 
-```md
 ![Quadro da Sprint 01 atualizado](./assets/entrega03/quadro-sprint-01.png)
-```
 
 ---
 
@@ -172,9 +168,7 @@ O Issue/Bug Tracker do GitHub foi atualizado com histórias, bugs e melhorias re
 
 **Print da tela de Issues:**
 
-```md
 ![Issues do GitHub](./assets/entrega03/issues.png)
-```
 
 | Issue | Tipo | Descrição | Status |
 | --- | --- | --- | --- |
