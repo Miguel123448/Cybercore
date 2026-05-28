@@ -139,16 +139,8 @@ A **Sprint 01** foi criada no Board do Trello para organizar as histórias, bugs
 Foi adicionado um novo screencast com ênfase nas novas histórias implementadas na Sprint 01.
 
 **Link do screencast:**  
-[Adicionar link do screencast aqui](#)
+[Screencast](https://drive.google.com/file/d/1aErr1KYlCdxmnujOfvtayXIt9QxslKtb/view?usp=sharing)
 
-O vídeo deve demonstrar:
-
-- menu principal do jogo;
-- fluxo das funcionalidades implementadas;
-- funcionamento das histórias da Sprint 01;
-- persistência do histórico em `historico.txt`;
-- tela de análise ou relatório;
-- execução dos testes principais.
 
 ---
 
@@ -173,7 +165,7 @@ O Issue/Bug Tracker do GitHub foi atualizado com histórias, bugs e melhorias re
 | Issue | Tipo | Descrição | Status |
 | --- | --- | --- | --- |
 | #1 | Melhoria | Confirmar a saída ao pressionar esc | [Aberta] |
-| #1 | Melhoria | Mudar o nome do jogo | [Fechada] |
+| #2 | Melhoria | Mudar o nome do jogo | [Fechada] |
 
 ---
 
@@ -227,7 +219,7 @@ Também foi importante manter o histórico em `.txt`, pois isso deixou os testes
 - [X] Backlog atualizado.
 - [X] Ambiente de versionamento atuante.
 - [X] Commits frequentes no GitHub.
-- [ ] Novo screencast adicionado ao README.
+- [X] Novo screencast adicionado ao README.
 - [X] Issue/Bug Tracker atualizado.
 - [X] Testes de sistema documentados.
 - [X] Relato de programação em par acessível no README.
