@@ -110,8 +110,8 @@ timestamp;alvo;tentativas;baixos;altos;palpites_csv
 
 | Par | Funcionalidades executadas |
 | --- | --- |
-| **Par 1 — salvamento das partidas** | Implementou a gravação das partidas no `historico.txt`, usando abertura do arquivo em modo de acréscimo. Esse par ficou responsável por salvar o timestamp, o número alvo, a quantidade de tentativas, os palpites baixos, os palpites altos e a lista de palpites em formato CSV. Também verificou se o arquivo era criado corretamente quando ainda não existia. |
-| **Par 2 — leitura e reconstrução do histórico** | Implementou a leitura do histórico com `fgets`, separando os campos por `;` e reconstruindo os dados das partidas antigas. Esse par também integrou o histórico com a tela de análise do jogo, permitindo calcular média de tentativas, melhor sessão, pior sessão, desvio padrão, viés baixo/alto e sugestões de estratégia. |
+| **Miguel e Lucas Cavalcante — salvamento das partidas** | Implementou a gravação das partidas no `historico.txt`, usando abertura do arquivo em modo de acréscimo. Esse par ficou responsável por salvar o timestamp, o número alvo, a quantidade de tentativas, os palpites baixos, os palpites altos e a lista de palpites em formato CSV. Também verificou se o arquivo era criado corretamente quando ainda não existia. |
+| **Miguel e Lucas Cavalcante — leitura e reconstrução do histórico** | Implementou a leitura do histórico com `fgets`, separando os campos por `;` e reconstruindo os dados das partidas antigas. Esse par também integrou o histórico com a tela de análise do jogo, permitindo calcular média de tentativas, melhor sessão, pior sessão, desvio padrão, viés baixo/alto e sugestões de estratégia. |
 
 ### O que aprendemos com essa parte
 
