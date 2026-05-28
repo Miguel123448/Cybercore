@@ -111,16 +111,16 @@ A **Sprint 01** foi composta pelas seguintes histórias de usuário:
 Nesta entrega, foram implementadas pelo menos 3 histórias de usuário, conforme solicitado. A tabela abaixo pode ser atualizada com o status final de cada uma:
 
 | História | Funcionalidade | Status |
-| --- | --- | --- | --- |
-| **UH1** | Iniciar nova partida | [Concluída] |
-| **UH2** | Receber dicas “muito alto / muito baixo” | [Concluída] |
-| **UH3** | Registrar sessão no histórico | [Concluída] |
-| **UH4** | Feedback comparativo com busca binária | [Concluída] |
-| **UH5** | Visualizar estatísticas agregadas do histórico | [Concluída] |
-| **UH6** | Recuperar histórico ao iniciar o programa | [Concluída] |
-| **UH8** | Receber sugestões estratégicas personalizadas | [Concluída] |
-| **UH9** | Calcular desvio padrão usando recursão | [Concluída] |
-| **UH10** | Identificar monotonicidade dos palpites (recursivo) | [Concluída] |
+| :--- | :--- | :---: |
+| **UH1** | Iniciar nova partida | ✅ Concluída |
+| **UH2** | Receber dicas “muito alto / muito baixo” | ✅ Concluída |
+| **UH3** | Registrar sessão no histórico | ✅ Concluída |
+| **UH4** | Feedback comparativo com busca binária | ✅ Concluída |
+| **UH5** | Visualizar estatísticas agregadas do histórico | ✅ Concluída |
+| **UH6** | Recuperar histórico ao iniciar o programa | ✅ Concluída |
+| **UH8** | Receber sugestões estratégicas personalizadas | ✅ Concluída |
+| **UH9** | Calcular desvio padrão usando recursão | ✅ Concluída |
+| **UH10** | Identificar monotonicidade dos palpites (recursivo) | ✅ Concluída |
 
 ---
 
