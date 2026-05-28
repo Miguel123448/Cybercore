@@ -166,6 +166,7 @@ O Issue/Bug Tracker do GitHub foi atualizado com histórias, bugs e melhorias re
 | --- | --- | --- | --- |
 | #1 | Melhoria | Confirmar a saída ao pressionar esc | [Aberta] |
 | #2 | Melhoria | Mudar o nome do jogo | [Fechada] |
+| #3 | Erro | Fundo .gif não funcional | [Aberta] |
 
 ---
 
