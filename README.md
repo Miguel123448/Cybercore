@@ -110,49 +110,31 @@ A **Sprint 01** foi composta pelas seguintes histórias de usuário:
 
 Nesta entrega, foram implementadas pelo menos 3 histórias de usuário, conforme solicitado. A tabela abaixo pode ser atualizada com o status final de cada uma:
 
-| História | Funcionalidade | Status | Evidência |
+| História | Funcionalidade | Status |
 | --- | --- | --- | --- |
-| **UH1** | [Descrever a funcionalidade implementada] | [Concluída/Parcial] | [Adicionar print/link] |
-| **UH2** | [Descrever a funcionalidade implementada] | [Concluída/Parcial] | [Adicionar print/link] |
-| **UH3** | [Descrever a funcionalidade implementada] | [Concluída/Parcial] | [Adicionar print/link] |
-| **UH4** | [Descrever a funcionalidade implementada] | [Concluída/Parcial] | [Adicionar print/link] |
-| **UH5** | [Descrever a funcionalidade implementada] | [Concluída/Parcial] | [Adicionar print/link] |
-| **UH6** | [Descrever a funcionalidade implementada] | [Concluída/Parcial] | [Adicionar print/link] |
-| **UH8** | [Descrever a funcionalidade implementada] | [Concluída/Parcial] | [Adicionar print/link] |
-| **UH9** | [Descrever a funcionalidade implementada] | [Concluída/Parcial] | [Adicionar print/link] |
-| **UH10** | [Descrever a funcionalidade implementada] | [Concluída/Parcial] | [Adicionar print/link] |
+| **UH1** | Iniciar nova partida | [Concluída] |
+| **UH2** | Receber dicas “muito alto / muito baixo” | [Concluída] |
+| **UH3** | Registrar sessão no histórico | [Concluída] |
+| **UH4** | Feedback comparativo com busca binária | [Concluída] |
+| **UH5** | Visualizar estatísticas agregadas do histórico | [Concluída] |
+| **UH6** | Recuperar histórico ao iniciar o programa | [Concluída] |
+| **UH8** | Receber sugestões estratégicas personalizadas | [Concluída] |
+| **UH9** | Calcular desvio padrão usando recursão | [Concluída] |
+| **UH10** | Identificar monotonicidade dos palpites (recursivo) | [Concluída] |
 
 ---
 
 ### Criação da Sprint no Board
 
-A **Sprint 01** foi criada no Board do GitHub Projects para organizar as histórias, bugs e melhorias da Entrega 03. O quadro foi utilizado para acompanhar o andamento das tarefas da equipe durante a sprint.
-
-**Link do Board:**  
-[Adicionar link do GitHub Projects aqui](#)
+A **Sprint 01** foi criada no Board do Trello para organizar as histórias, bugs e melhorias da Entrega 03. O quadro foi utilizado para acompanhar o andamento das tarefas da equipe durante a sprint.
 
 **Print da Sprint 01 no Board:**  
-> Adicionar print da tela da Sprint 01 no README.
 
 ```md
 ![Sprint 01 no Board](./assets/entrega03/sprint-01-board.png)
 ```
 
 ---
-
-### Ambiente de versionamento atuante
-
-O projeto está sendo versionado no GitHub, com commits frequentes realizados pelos integrantes da equipe. Os commits registram a evolução das funcionalidades, ajustes de interface, correções de bugs, persistência em arquivo texto e atualizações de documentação.
-
-**Link do repositório:**  
-[Adicionar link do repositório aqui](#)
-
-**Print dos commits:**  
-> Adicionar print da aba de commits do GitHub.
-
-```md
-![Commits frequentes](./assets/entrega03/commits.png)
-```
 
 ### Screencast da Entrega 03
 
