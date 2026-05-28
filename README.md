@@ -150,7 +150,7 @@ O quadro da Sprint 01 foi atualizado para refletir o estado da Entrega 03, inclu
 
 **Print do quadro da sprint atualizado:**
 
-![Quadro da Sprint 01 atualizado](./assets/entrega03/quadro-sprint-01.png)
+![Quadro da Sprint 01 atualizado](./assets/entrega03/sprint-sprint-01.png)
 
 ---
 
@@ -160,7 +160,7 @@ O Issue/Bug Tracker do GitHub foi atualizado com histórias, bugs e melhorias re
 
 **Print da tela de Issues:**
 
-![Issues do GitHub](./assets/entrega03/issues.png)
+![Issues do GitHub](./assets/entrega03/issue.png)
 
 | Issue | Tipo | Descrição | Status |
 | --- | --- | --- | --- |
