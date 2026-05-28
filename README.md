@@ -144,16 +144,6 @@ Foi adicionado um novo screencast com ênfase nas novas histórias implementadas
 
 ---
 
-### Quadro da Sprint 01 atualizado
-
-O quadro da Sprint 01 foi atualizado para refletir o estado da Entrega 03, incluindo tarefas concluídas, em andamento e pendentes.
-
-**Print do quadro da sprint atualizado:**
-
-![Quadro da Sprint 01 atualizado](./assets/entrega03/sprint-sprint-01.png)
-
----
-
 ### Issue/Bug Tracker atualizado
 
 O Issue/Bug Tracker do GitHub foi atualizado com histórias, bugs e melhorias relacionados à Entrega 03.
