@@ -1,7 +1,7 @@
 CC = gcc
 CFLAGS = -std=c11 -Wall -Wextra -Iinclude
 SRC = src/main.c src/sudoku.c src/history.c
-OUT = Jogo.exe
+OUT = DiaZero.exe
 
 # Windows / MinGW usando a raylib incluida em game/lib
 all:
@@ -9,7 +9,7 @@ all:
 
 # Linux/macOS: requer raylib instalada no sistema
 linux:
-	$(CC) $(CFLAGS) $(SRC) -o cybercore -lraylib -lm
+	$(CC) $(CFLAGS) $(SRC) -o diazero -lraylib -lm
 
 clean:
-	rm -f $(OUT) cybercore *.o src/*.o
+	rm -f $(OUT) diazero *.o src/*.o

@@ -240,7 +240,7 @@ static void DrawHeaderPanel(void) {
     DrawRectangleLines(38, 42, 40, 40, CYBER_GREEN);
     DrawText("<>_", 40, 54, 20, CYBER_GREEN);
 
-    DrawText("CyberCore", 108, 34, 42, CYBER_GREEN);
+    DrawText("Dia Zero", 108, 34, 42, CYBER_GREEN);
     DrawText("QUEBRA DE FREQUENCIA", 111, 88, 19, CYBER_GREEN);
     DrawRectangleLines(36, 111, 342, 48, CYBER_DARK_GREEN);
     DrawText("Resolva desafios. Colete pistas.", 48, 121, 15, CYBER_GREEN);
@@ -291,7 +291,7 @@ static void DrawGlobalDesktop(const CyberGame *game, Screen screen) {
     DrawTimerWindow(gMatchStartTime);
     DrawSystemWindow(game, screen);
     DrawRectangleLines(1235, 713, 112, 32, CYBER_DARK_GREEN);
-    DrawText("v2.0 - CyberCore OS", 1243, 724, 12, CYBER_GREEN);
+    DrawText("v2.0 - Dia Zero OS", 1243, 724, 12, CYBER_GREEN);
 }
 
 // Libera uma pista quando o jogador avança no jogo.
@@ -470,10 +470,10 @@ static Rectangle MenuButtonRect(int index) {
 static void DrawMenu(void) {
     Rectangle win = {470, 178, 440, 455};
     DrawClassicWindow(win, "Controle de Acesso");
-    DrawText("CyberCore", 548, 238, 44, TEXT_DARK);
+    DrawText("Dia Zero", 548, 238, 44, TEXT_DARK);
     DrawText("Quebra de Frequencia", 555, 302, 20, CYBER_DARK_GREEN);
 
-    DrawClassicButton(MenuButtonRect(0), "Iniciar ataque", false, false);
+    DrawClassicButton(MenuButtonRect(0), "Iniciar defesa", false, false);
     DrawClassicButton(MenuButtonRect(1), "Historico e analise", false, false);
     DrawClassicButton(MenuButtonRect(2), "Como jogar", false, false);
     DrawClassicButton(MenuButtonRect(3), "Sair", false, false);
@@ -485,10 +485,10 @@ static void DrawMenu(void) {
 static void DrawIntro(void) {
     Rectangle win = {430, 185, 760, 390};
     DrawClassicWindow(win, "Briefing da Missao");
-    DrawText("MISSAO: INVADIR O CYBERCORE", 485, 242, 30, TEXT_DARK);
+    DrawText("MISSAO: INVADIR O DIA ZERO", 485, 242, 30, TEXT_DARK);
     DrawClassicInset((Rectangle){478, 295, 660, 168}, BLACK);
     DrawWrappedText(
-        "O CyberCore protege sua frequencia central com tres camadas. Primeiro, estabilize uma matriz Sudoku 4x4. Depois, interprete o firewall proposicional. Por fim, use as pistas para descobrir a frequencia secreta entre 1 e 100.",
+        "O Dia Zero protege sua frequencia central com tres camadas. Primeiro, estabilize uma matriz Sudoku 4x4. Depois, interprete o firewall proposicional. Por fim, use as pistas para descobrir a frequencia secreta entre 1 e 100.",
         505, 322, 21, 605, CYBER_GREEN
     );
     DrawClassicButton((Rectangle){572, 492, 470, 52}, "Pressione ENTER para iniciar", false, false);
@@ -650,7 +650,7 @@ static void DrawHistoryScreen(void) {
 
     Rectangle win = {400, 110, 885, 535};
     DrawClassicWindow(win, "Historico e Analise");
-    DrawText("RELATORIO DO CYBERCORE", 440, 168, 30, TEXT_DARK);
+    DrawText("RELATORIO DO DIA ZERO", 440, 168, 30, TEXT_DARK);
 
     if (count <= 0) {
         DrawClassicInset((Rectangle){440, 230, 785, 200}, BLACK);
@@ -668,7 +668,7 @@ static void DrawHistoryScreen(void) {
         DrawText(TextFormat("Vies medio alto: %.1f%%", report.averageHighBias * 100.0), 860, 285, 20, CYBER_GREEN);
         DrawWrappedText(TextFormat("Passos monotonicos: %d", report.monotonicSteps), 860, 325, 20, 340, CYBER_GREEN);
 
-        DrawText("Sugestao do CyberCore:", 440, 520, 22, TEXT_DARK);
+        DrawText("Sugestao do Dia Zero:", 440, 520, 22, TEXT_DARK);
         DrawWrappedText(report.suggestion, 440, 555, 19, 770, CYBER_DARK_GREEN);
     }
     DrawClassicButton((Rectangle){694, 598, 300, 36}, "ENTER/H - voltar", false, false);
@@ -702,7 +702,7 @@ int main(void) {
 
     // Crio a janela do Raylib.
     SetConfigFlags(FLAG_VSYNC_HINT);
-    InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "CyberCore - Quebra de Frequencia");
+    InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Dia Zero - Quebra de Frequencia");
 
     // Coloco a janela em fullscreen usando o tamanho do monitor.
     int monitor = GetCurrentMonitor();

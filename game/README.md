@@ -1,4 +1,4 @@
-# CyberCore - Quebra de Frequencia
+# Dia Zero - Quebra de Frequencia
 
 Versao em C com Raylib usando uma interface inspirada em sistemas antigos: janelas cinza estilo Windows 95/98, barras azuis, fundo de chuva digital verde, paineis de cronometro, status do sistema e pistas coletadas.
 
@@ -50,7 +50,7 @@ compilar.bat
 Ou compile manualmente:
 
 ```bat
-gcc -std=c11 -Wall -Wextra -Iinclude src/main.c src/sudoku.c src/history.c -o Jogo.exe -Llib -lraylib -lopengl32 -lgdi32 -lwinmm -lm
+gcc -std=c11 -Wall -Wextra -Iinclude src/main.c src/sudoku.c src/history.c -o DiaZero.exe -Llib -lraylib -lopengl32 -lgdi32 -lwinmm -lm
 ```
 
 Se aparecer que `gcc` nao e reconhecido, instale o MinGW/MSYS2 e adicione o caminho do GCC ao `PATH` do Windows.
@@ -83,11 +83,16 @@ game/
 
 ## Atualização visual
 
-Esta versão usa o arquivo `assets/background/36030.gif` como fundo animado do CyberCore. Caso o GIF não seja encontrado, o jogo volta automaticamente para o fundo procedural antigo em estilo Matrix.
+Esta versão usa o arquivo `assets/background/36030.gif` como fundo animado do Dia Zero. Caso o GIF não seja encontrado, o jogo volta automaticamente para o fundo procedural antigo em estilo Matrix.
 
-A tela inicial também foi ajustada para melhorar o espaçamento entre `CyberCore` e `Quebra de Frequência`, e o texto do painel superior esquerdo foi reposicionado para permanecer dentro do quadro.
+A tela inicial também foi ajustada para melhorar o espaçamento entre `Dia Zero` e `Quebra de Frequência`, e o texto do painel superior esquerdo foi reposicionado para permanecer dentro do quadro.
 
 
 ## Persistencia do historico
 
 A persistencia das partidas e feita somente em arquivo texto simples: `historico.txt`. O jogo cria o arquivo automaticamente caso ele nao exista e grava uma sessao por linha.
+
+
+## Programação em Par
+
+O relato da programação em par usada na persistência do histórico está documentado no README principal do repositório. A parte principal foi a criação e leitura do `historico.txt`, mantendo uma partida por linha e permitindo que a tela de análise reconstrua as sessões salvas.
