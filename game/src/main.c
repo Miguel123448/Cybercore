@@ -321,44 +321,178 @@ void Game_Init(CyberGame *game) {
     snprintf(game->hints[3], sizeof(game->hints[3]), "%s multipla de 5", (game->secretNumber % 5 == 0) ? "E" : "NAO E");
     snprintf(game->hints[4], sizeof(game->hints[4]), "Soma dos digitos: %d", game->digitSum);
 
-    // Primeira pergunta: usa E para testar se o jogador entendeu as pistas.
-    snprintf(
-        game->questions[0].prompt,
-        sizeof(game->questions[0].prompt),
-        "P: a frequencia esta no intervalo do Sudoku. Q: a paridade liberada esta correta. Se P E Q sao verdadeiros, qual conclusao e valida?"
-    );
-    snprintf(game->questions[0].options[0], sizeof(game->questions[0].options[0]), "P e falso, mas Q e verdadeiro.");
-    snprintf(game->questions[0].options[1], sizeof(game->questions[0].options[1]), "P e Q sao verdadeiros ao mesmo tempo.");
-    snprintf(game->questions[0].options[2], sizeof(game->questions[0].options[2]), "Q obrigatoriamente e falso.");
-    snprintf(game->questions[0].options[3], sizeof(game->questions[0].options[3]), "Nenhuma pista pode ser usada.");
-    game->questions[0].correctOption = 1;
-    game->questions[0].hintToUnlock = 2;
+    // Aqui fica o banco de perguntas da fase de lógica.
+    // A partida continua tendo só 3 perguntas, mas elas são sorteadas desse banco.
+    static const LogicQuestion questionBank[] = {
+        {
+            "P: a frequencia esta no intervalo do Sudoku. Q: a paridade liberada esta correta. Se P E Q sao verdadeiros, qual conclusao e valida?",
+            {
+                "P e falso, mas Q e verdadeiro.",
+                "P e Q sao verdadeiros ao mesmo tempo.",
+                "Q obrigatoriamente e falso.",
+                "Nenhuma pista pode ser usada."
+            },
+            1,
+            -1,
+            false
+        },
+        {
+            "P: a frequencia e par. Se NAO P for verdadeiro, qual alternativa descreve melhor a frequencia?",
+            {
+                "A frequencia continua sendo par.",
+                "A frequencia e impar.",
+                "A frequencia e maior que 90.",
+                "Nada pode ser concluido sobre paridade."
+            },
+            1,
+            -1,
+            false
+        },
+        {
+            "P: um numero e multiplo de 5. Q: o ultimo digito dele e 0 ou 5. Sabendo que P -> Q e que NAO Q e verdadeiro, qual regra foi aplicada?",
+            {
+                "Afirmacao do consequente: logo P.",
+                "Modus tollens: logo NAO P.",
+                "Contradicao: P e Q sao verdadeiros.",
+                "Disjuncao: P OU Q."
+            },
+            1,
+            -1,
+            false
+        },
+        {
+            "P: a frequencia e maior que 50. Q: a frequencia e menor que 80. Se P OU Q e verdadeiro, qual frase esta correta?",
+            {
+                "Pelo menos uma das duas proposicoes e verdadeira.",
+                "As duas proposicoes precisam ser falsas.",
+                "O numero obrigatoriamente e 50.",
+                "P OU Q nunca pode ser verdadeiro."
+            },
+            0,
+            -1,
+            false
+        },
+        {
+            "P: a pista diz que a frequencia esta entre dois valores. Q: o chute esta dentro desse intervalo. Para P E Q ser verdadeiro, o que precisa acontecer?",
+            {
+                "Apenas P precisa ser verdadeira.",
+                "Apenas Q precisa ser verdadeira.",
+                "P e Q precisam ser verdadeiras.",
+                "P e Q precisam ser falsas."
+            },
+            2,
+            -1,
+            false
+        },
+        {
+            "P: intervalo refinado confere. Q: soma dos digitos confere. R: nucleo aceita acesso. Se (P E Q) -> R e P E Q sao verdadeiros, o que segue?",
+            {
+                "R: o nucleo aceita o acesso.",
+                "NAO R: o nucleo bloqueia o acesso.",
+                "P e falso.",
+                "Q e falso."
+            },
+            0,
+            -1,
+            false
+        },
+        {
+            "P: o numero esta no intervalo correto. Q: o numero tem a paridade correta. Se NAO (P E Q) e verdadeiro, o que isso indica?",
+            {
+                "P e Q sao obrigatoriamente verdadeiros.",
+                "Pelo menos uma das duas condicoes falhou.",
+                "O numero foi descoberto.",
+                "A pista final fica inutil."
+            },
+            1,
+            -1,
+            false
+        },
+        {
+            "P: se o chute for menor que a frequencia real, o sistema responde 'muito baixo'. O chute foi menor. Qual conclusao segue pela implicacao?",
+            {
+                "O sistema deve responder 'muito baixo'.",
+                "O sistema deve responder 'muito alto'.",
+                "A frequencia obrigatoriamente e 100.",
+                "Nenhuma resposta pode aparecer."
+            },
+            0,
+            -1,
+            false
+        },
+        {
+            "P: a frequencia esta entre 1 e 100. Q: a frequencia esta fora de 1 a 100. Qual alternativa representa uma contradicao?",
+            {
+                "P E Q.",
+                "P OU Q.",
+                "NAO P.",
+                "Apenas P."
+            },
+            0,
+            -1,
+            false
+        },
+        {
+            "P: a frequencia e impar. Q: a frequencia e par. Sabendo que P e verdadeiro, qual conclusao podemos tirar sobre Q?",
+            {
+                "Q tambem e verdadeira.",
+                "Q e falsa.",
+                "Q nao tem relacao com P.",
+                "P deixa de ser verdadeira."
+            },
+            1,
+            -1,
+            false
+        },
+        {
+            "P: a pista do Sudoku esta correta. Q: a pista da logica esta correta. Qual operador exige que as duas sejam verdadeiras?",
+            {
+                "OU.",
+                "E.",
+                "NAO.",
+                "Nenhum operador."
+            },
+            1,
+            -1,
+            false
+        },
+        {
+            "P: o numero e menor que 30. Q: o numero e maior que 70. Se P OU Q e falso, o que podemos concluir?",
+            {
+                "O numero e menor que 30.",
+                "O numero e maior que 70.",
+                "P e Q sao falsas.",
+                "P e Q sao verdadeiras."
+            },
+            2,
+            -1,
+            false
+        }
+    };
 
-    // Segunda pergunta: usa implicação.
-    snprintf(
-        game->questions[1].prompt,
-        sizeof(game->questions[1].prompt),
-        "P: um numero e multiplo de 5. Q: o ultimo digito dele e 0 ou 5. Sabendo que P -> Q e que NAO Q e verdadeiro, qual regra foi aplicada?"
-    );
-    snprintf(game->questions[1].options[0], sizeof(game->questions[1].options[0]), "Afirmacao do consequente: logo P.");
-    snprintf(game->questions[1].options[1], sizeof(game->questions[1].options[1]), "Modus tollens: logo NAO P.");
-    snprintf(game->questions[1].options[2], sizeof(game->questions[1].options[2]), "Contradicao: P e Q sao verdadeiros.");
-    snprintf(game->questions[1].options[3], sizeof(game->questions[1].options[3]), "Disjuncao: P OU Q.");
-    game->questions[1].correctOption = 1;
-    game->questions[1].hintToUnlock = 3;
+    int totalBankQuestions = (int)(sizeof(questionBank) / sizeof(questionBank[0]));
+    int indexes[sizeof(questionBank) / sizeof(questionBank[0])];
 
-    // Terceira pergunta: junta condições para liberar a pista final.
-    snprintf(
-        game->questions[2].prompt,
-        sizeof(game->questions[2].prompt),
-        "P: intervalo refinado confere. Q: soma dos digitos confere. R: nucleo aceita acesso. Se (P E Q) -> R e P E Q sao verdadeiros, o que segue?"
-    );
-    snprintf(game->questions[2].options[0], sizeof(game->questions[2].options[0]), "R: o nucleo aceita o acesso.");
-    snprintf(game->questions[2].options[1], sizeof(game->questions[2].options[1]), "NAO R: o nucleo bloqueia o acesso.");
-    snprintf(game->questions[2].options[2], sizeof(game->questions[2].options[2]), "P e falso.");
-    snprintf(game->questions[2].options[3], sizeof(game->questions[2].options[3]), "Q e falso.");
-    game->questions[2].correctOption = 0;
-    game->questions[2].hintToUnlock = 4;
+    // Primeiro monto uma lista com todos os índices do banco.
+    for (int i = 0; i < totalBankQuestions; i++) {
+        indexes[i] = i;
+    }
+
+    // Depois embaralho os índices para escolher perguntas diferentes a cada partida.
+    for (int i = totalBankQuestions - 1; i > 0; i--) {
+        int j = rand() % (i + 1);
+        int temp = indexes[i];
+        indexes[i] = indexes[j];
+        indexes[j] = temp;
+    }
+
+    // Copio só 3 perguntas sorteadas para a partida atual.
+    // Cada acerto libera uma pista nova, mantendo a progressão do jogo.
+    for (int i = 0; i < MAX_LOGIC_QUESTIONS; i++) {
+        game->questions[i] = questionBank[indexes[i]];
+        game->questions[i].answered = false;
+        game->questions[i].hintToUnlock = 2 + i;
+    }
 
     snprintf(game->feedback, sizeof(game->feedback), "Use as pistas para reduzir o intervalo de busca.");
 }
@@ -695,6 +829,45 @@ static void StartNewGame(CyberGame *game, SudokuGame *sudoku, Screen *screen) {
     *screen = SCREEN_INTRO;
 }
 
+
+// Retângulos dos botões da janela de confirmação de saída.
+static Rectangle ExitYesButtonRect(void) {
+    return (Rectangle){520, 462, 170, 42};
+}
+
+static Rectangle ExitNoButtonRect(void) {
+    return (Rectangle){715, 462, 190, 42};
+}
+
+// Essa janela evita que o jogo feche direto quando apertar ESC sem querer.
+static void DrawExitConfirmModal(void) {
+    DrawRectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, (Color){0, 0, 0, 135});
+
+    Rectangle win = {455, 285, 500, 245};
+    DrawClassicWindow(win, "Confirmar saida");
+
+    DrawText("Deseja sair do jogo?", 520, 345, 28, TEXT_DARK);
+    DrawWrappedText(
+        "Aperte SIM para fechar ou NAO para voltar para a tela atual.",
+        500, 390, 19, 410, DARKGRAY
+    );
+
+    DrawClassicButton(ExitYesButtonRect(), "Sim, sair", false, false);
+    DrawClassicButton(ExitNoButtonRect(), "Nao, voltar", false, false);
+}
+
+// Aqui trato os comandos da confirmação de saída.
+static void UpdateExitConfirmModal(bool *showExitConfirm, bool *exitRequested) {
+    if (IsKeyPressed(KEY_ENTER) || IsKeyPressed(KEY_S) || Clicked(ExitYesButtonRect())) {
+        *exitRequested = true;
+        return;
+    }
+
+    if (IsKeyPressed(KEY_ESCAPE) || IsKeyPressed(KEY_N) || Clicked(ExitNoButtonRect())) {
+        *showExitConfirm = false;
+    }
+}
+
 // Função principal: inicia o Raylib, carrega os arquivos e roda o loop do jogo.
 int main(void) {
     // Inicio o rand para o número e o Sudoku mudarem a cada jogo.
@@ -703,6 +876,7 @@ int main(void) {
     // Crio a janela do Raylib.
     SetConfigFlags(FLAG_VSYNC_HINT);
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Dia Zero - Quebra de Frequencia");
+    SetExitKey(KEY_NULL); // Assim o ESC nao fecha o Raylib sozinho.
 
     // Coloco a janela em fullscreen usando o tamanho do monitor.
     int monitor = GetCurrentMonitor();
@@ -747,63 +921,72 @@ int main(void) {
     // Estado inicial: começa no menu.
     Screen screen = SCREEN_MENU;
     bool exitRequested = false;
+    bool showExitConfirm = false;
     CyberGame game;
     SudokuGame sudoku;
     Game_Init(&game);
     Sudoku_Init(&sudoku);
 
     // Loop principal do jogo.
-    while (!WindowShouldClose() && !exitRequested) {
+    while (!exitRequested) {
         UpdateFullscreenTransform();
 
         if (IsKeyPressed(KEY_F11)) {
             ToggleFullscreen();
         }
 
-        // Primeiro atualizo os comandos e mudanças de tela.
-        switch (screen) {
-            case SCREEN_MENU:
-                if (IsKeyPressed(KEY_ENTER) || Clicked(MenuButtonRect(0))) StartNewGame(&game, &sudoku, &screen);
-                if (IsKeyPressed(KEY_H) || Clicked(MenuButtonRect(1))) screen = SCREEN_HISTORY;
-                if (IsKeyPressed(KEY_C) || Clicked(MenuButtonRect(2))) screen = SCREEN_HELP;
-                if (Clicked(MenuButtonRect(3)) || IsKeyPressed(KEY_ESCAPE)) exitRequested = true;
-                break;
+        // Primeiro trato a confirmação de saída.
+        // Se a janela estiver aberta, eu não deixo a tela de trás receber cliques.
+        if (showExitConfirm) {
+            UpdateExitConfirmModal(&showExitConfirm, &exitRequested);
+        } else if (WindowShouldClose() || IsKeyPressed(KEY_ESCAPE)) {
+            showExitConfirm = true;
+        } else {
+            // Primeiro atualizo os comandos e mudanças de tela.
+            switch (screen) {
+                case SCREEN_MENU:
+                    if (IsKeyPressed(KEY_ENTER) || Clicked(MenuButtonRect(0))) StartNewGame(&game, &sudoku, &screen);
+                    if (IsKeyPressed(KEY_H) || Clicked(MenuButtonRect(1))) screen = SCREEN_HISTORY;
+                    if (IsKeyPressed(KEY_C) || Clicked(MenuButtonRect(2))) screen = SCREEN_HELP;
+                    if (Clicked(MenuButtonRect(3))) showExitConfirm = true;
+                    break;
 
-            case SCREEN_INTRO:
-                if (IsKeyPressed(KEY_ENTER) || Clicked((Rectangle){572, 492, 470, 52})) screen = SCREEN_SUDOKU;
-                break;
+                case SCREEN_INTRO:
+                    if (IsKeyPressed(KEY_ENTER) || Clicked((Rectangle){572, 492, 470, 52})) screen = SCREEN_SUDOKU;
+                    break;
 
-            case SCREEN_SUDOKU:
-                Sudoku_Update(&sudoku);
-                if (sudoku.completed) {
-                    Game_UnlockHint(&game, 0);
-                    Game_UnlockHint(&game, 1);
-                    if (IsKeyPressed(KEY_ENTER) || Clicked((Rectangle){965, 600, 325, 42})) {
-                        screen = SCREEN_LOGIC;
+                case SCREEN_SUDOKU:
+                    Sudoku_Update(&sudoku);
+                    if (sudoku.completed) {
+                        Game_UnlockHint(&game, 0);
+                        Game_UnlockHint(&game, 1);
+                        if (IsKeyPressed(KEY_ENTER) || Clicked((Rectangle){965, 600, 325, 42})) {
+                            screen = SCREEN_LOGIC;
+                        }
                     }
-                }
-                break;
+                    break;
 
-            case SCREEN_LOGIC:
-                UpdateLogicScreen(&game, &screen);
-                break;
+                case SCREEN_LOGIC:
+                    UpdateLogicScreen(&game, &screen);
+                    break;
 
-            case SCREEN_GUESS:
-                UpdateGuessScreen(&game, &screen, sudoku.errors);
-                break;
+                case SCREEN_GUESS:
+                    UpdateGuessScreen(&game, &screen, sudoku.errors);
+                    break;
 
-            case SCREEN_RESULT:
-                if (IsKeyPressed(KEY_ENTER) || Clicked((Rectangle){535, 525, 260, 46})) screen = SCREEN_MENU;
-                if (IsKeyPressed(KEY_H) || Clicked((Rectangle){825, 525, 260, 46})) screen = SCREEN_HISTORY;
-                break;
+                case SCREEN_RESULT:
+                    if (IsKeyPressed(KEY_ENTER) || Clicked((Rectangle){535, 525, 260, 46})) screen = SCREEN_MENU;
+                    if (IsKeyPressed(KEY_H) || Clicked((Rectangle){825, 525, 260, 46})) screen = SCREEN_HISTORY;
+                    break;
 
-            case SCREEN_HISTORY:
-                if (IsKeyPressed(KEY_ENTER) || IsKeyPressed(KEY_H) || Clicked((Rectangle){694, 598, 300, 36})) screen = SCREEN_MENU;
-                break;
+                case SCREEN_HISTORY:
+                    if (IsKeyPressed(KEY_ENTER) || IsKeyPressed(KEY_H) || Clicked((Rectangle){694, 598, 300, 36})) screen = SCREEN_MENU;
+                    break;
 
-            case SCREEN_HELP:
-                if (IsKeyPressed(KEY_ENTER) || Clicked((Rectangle){690, 585, 300, 42})) screen = SCREEN_MENU;
-                break;
+                case SCREEN_HELP:
+                    if (IsKeyPressed(KEY_ENTER) || Clicked((Rectangle){690, 585, 300, 42})) screen = SCREEN_MENU;
+                    break;
+            }
         }
 
         // Depois desenho o frame na tela.
@@ -857,6 +1040,10 @@ int main(void) {
             case SCREEN_HELP:
                 DrawHelpScreen();
                 break;
+        }
+
+        if (showExitConfirm) {
+            DrawExitConfirmModal();
         }
 
         EndMode2D();

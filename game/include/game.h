@@ -15,7 +15,8 @@
 // Máximo de pistas que a partida pode ter.
 #define MAX_HINTS 8
 
-// Quantidade de perguntas antes do chute final.
+// Quantidade de perguntas que aparecem em cada partida.
+// O jogo tem um banco maior, mas sorteia só 3 por rodada.
 #define MAX_LOGIC_QUESTIONS 3
 
 // Telas possíveis do jogo.
