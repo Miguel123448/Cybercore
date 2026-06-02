@@ -187,18 +187,27 @@ A persistência foi feita em arquivo texto simples, porque isso facilita os test
 timestamp;alvo;tentativas;baixos;altos;palpites_csv
 ```
 
+Além da persistência do histórico, também foi trabalhada a criação de um banco de dados de perguntas para o questionário do jogo. Esse banco de perguntas serve para organizar as questões usadas na fase de lógica proposicional, facilitando a manutenção e permitindo aumentar a quantidade de perguntas sem precisar alterar toda a estrutura do jogo.
+
+
 #### Funcionalidades feitas por cada par
 
 | Par | Funcionalidades executadas |
 | --- | --- |
 | **Miguel e Lucas Cavalcante — salvamento das partidas** | Implementou a gravação das partidas no `historico.txt`, usando abertura do arquivo em modo de acréscimo. Esse par ficou responsável por salvar o timestamp, o número alvo, a quantidade de tentativas, os palpites baixos, os palpites altos e a lista de palpites em formato CSV. Também verificou se o arquivo era criado corretamente quando ainda não existia. |
 | **Miguel e Lucas Cavalcante — leitura, análise e integração do histórico** | Implementou a leitura do histórico com `fgets`, separando os campos por `;` e reconstruindo os dados das partidas antigas. Esse par também integrou o histórico com a tela de análise do jogo, permitindo calcular média de tentativas, melhor sessão, pior sessão, desvio padrão, viés baixo/alto e sugestões de estratégia. |
+|  **Miguel e Lucas Cavalcante — Criação do banco de dados com questionário** | Foi criada uma estrutura para armazenar perguntas, alternativas e respostas corretas do questionário. A ideia é permitir que o jogo tenha um conjunto maior de perguntas disponíveis, podendo selecionar questões para a fase de lógica proposicional. |
 
 #### O que aprendemos com essa parte
 
 A programação em par ajudou bastante na parte de persistência, porque qualquer erro pequeno no formato do arquivo poderia atrapalhar a leitura depois. Com duas pessoas revisando o mesmo trecho, ficou mais fácil perceber problemas como separador errado, campo faltando, arquivo não encontrado ou diferença entre salvar uma partida nova e carregar partidas antigas.
 
 Também foi importante manter o histórico em `.txt`, pois isso deixou os testes mais simples. Assim, conseguimos abrir o `historico.txt`, conferir as linhas salvas e confirmar se o jogo estava registrando corretamente as sessões.
+
+Uma dificuldade que percebemos na programação em par foi conseguir conciliar os horários dos integrantes para se reunir. Como cada pessoa tinha uma rotina diferente, nem sempre era simples encontrar um horário em comum para programar junto. Mesmo assim, quando conseguimos nos organizar, a prática ajudou bastante na revisão da lógica e na identificação de erros na persistência.
+
+#### Print da tela de programação em par
+![Programação em par](./assets/entrega03/pp.jpeg)
 
 ---
 
