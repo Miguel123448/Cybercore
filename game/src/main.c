@@ -39,6 +39,8 @@ static const Color TEXT_DARK = {18, 18, 18, 255};
 
 // Algumas variáveis globais simples usadas pela interface.
 static double gMatchStartTime = 0.0;
+static bool gTimerPaused = true;
+static int gTimerFrozenSeconds = 0;
 static char gGuessText[8] = "";
 
 
@@ -255,20 +257,25 @@ static void DrawTimerWindow(double startTime) {
     DrawClassicInset(display, BLACK);
 
     int elapsed = 0;
-    if (startTime > 0.01) elapsed = (int)(GetTime() - startTime);
+    if (gTimerPaused) {
+        elapsed = gTimerFrozenSeconds;
+    } else if (startTime > 0.01) {
+        elapsed = (int)(GetTime() - startTime);
+    }
     int minutes = elapsed / 60;
     int seconds = elapsed % 60;
     DrawText(TextFormat("%02d:%02d", minutes, seconds), 102, 267, 34, CYBER_GREEN);
-    DrawText("Tempo de invasao", 88, 318, 15, CYBER_GREEN);
+    DrawText("Tempo de invasao", 88, 318, 15, CYBER_DARK_GREEN);
 }
 
 // Desenha o painel de status do sistema.
 static void DrawSystemWindow(const CyberGame *game, Screen screen) {
+    Color systemGreen = CYBER_DARK_GREEN;
     Rectangle r = {18, 602, 318, 136};
     DrawClassicWindow(r, "Sistema");
-    DrawRectangleLines(44, 651, 52, 38, CYBER_GREEN);
-    DrawRectangle(59, 690, 22, 8, CYBER_GREEN);
-    DrawLine(50, 701, 92, 701, CYBER_GREEN);
+    DrawRectangleLines(44, 651, 52, 38, systemGreen);
+    DrawRectangle(59, 690, 22, 8, systemGreen);
+    DrawLine(50, 701, 92, 701, systemGreen);
 
     int freq = 11;
     if (screen == SCREEN_SUDOKU) freq = 28;
@@ -278,10 +285,10 @@ static void DrawSystemWindow(const CyberGame *game, Screen screen) {
     if (screen == SCREEN_HISTORY) freq = 63;
     if (screen == SCREEN_HELP) freq = 47;
 
-    DrawText(TextFormat("Status: %s", screen == SCREEN_RESULT ? "ESTAVEL" : "INSTAVEL"), 115, 650, 16, CYBER_GREEN);
-    DrawText(TextFormat("Frequencia: %d%%", freq), 115, 677, 16, CYBER_GREEN);
-    DrawRectangleLines(115, 710, 178, 15, CYBER_GREEN);
-    DrawRectangle(116, 711, (int)(176 * (freq / 100.0f)), 13, CYBER_GREEN);
+    DrawText(TextFormat("Status: %s", screen == SCREEN_RESULT ? "ESTAVEL" : "INSTAVEL"), 115, 650, 16, systemGreen);
+    DrawText(TextFormat("Integridade: %d%%", freq), 115, 677, 16, systemGreen);
+    DrawRectangleLines(115, 710, 178, 15, systemGreen);
+    DrawRectangle(116, 711, (int)(176 * (freq / 100.0f)), 13, systemGreen);
 }
 
 // Coisas que aparecem em praticamente todas as telas.
@@ -633,6 +640,24 @@ static Rectangle LogicOptionRect(int i) {
     return (Rectangle){565, 340 + i * 58, 690, 42};
 }
 
+// Botao usado no pop-up de acerto/erro da fase de logica.
+static Rectangle LogicPopupButtonRect(void) {
+    return (Rectangle){620, 482, 240, 42};
+}
+
+// Mostra um aviso simples depois que o jogador responde uma pergunta de logica.
+static void DrawLogicFeedbackPopup(const CyberGame *game) {
+    DrawRectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, (Color){0, 0, 0, 115});
+
+    Rectangle win = {505, 300, 430, 235};
+    DrawClassicWindow(win, game->logicPopupCorrect ? "Resposta correta" : "Resposta incorreta");
+
+    Color titleColor = game->logicPopupCorrect ? CYBER_DARK_GREEN : MAROON;
+    DrawText(game->logicPopupCorrect ? "ACERTOU!" : "ERROU!", 615, 360, 32, titleColor);
+    DrawWrappedText(game->logicPopupMessage, 545, 405, 19, 350, TEXT_DARK);
+    DrawClassicButton(LogicPopupButtonRect(), "Continuar", false, false);
+}
+
 // Desenha a tela do quiz de lógica.
 static void DrawLogicScreen(CyberGame *game) {
     Rectangle win = {515, 108, 800, 520};
@@ -653,43 +678,64 @@ static void DrawLogicScreen(CyberGame *game) {
     }
 
     DrawClassicInset((Rectangle){546, 580, 735, 30}, (Color){230, 230, 230, 255});
-    if (question->answered) {
-        DrawText("Correto. ENTER para continuar.", 566, 586, 17, CYBER_DARK_GREEN);
+    if (game->showLogicPopup) {
+        DrawText("Resposta registrada. Confirme no pop-up.", 566, 586, 17, CYBER_DARK_GREEN);
     } else {
         DrawText(TextFormat("Erros de logica: %d | Clique em uma alternativa ou use 1-4", game->logicErrors), 566, 586, 17, DARKGRAY);
     }
 
     DrawHintsWindow(game, (Rectangle){42, 365, 395, 265}, "Pistas do Firewall");
+
+    if (game->showLogicPopup) {
+        DrawLogicFeedbackPopup(game);
+    }
 }
 
 // Atualiza a fase de lógica, vendo se a resposta está certa ou errada.
 static void UpdateLogicScreen(CyberGame *game, Screen *screen) {
     LogicQuestion *question = &game->questions[game->currentQuestion];
 
-    if (!question->answered) {
-        int selected = -1;
-        if (IsKeyPressed(KEY_ONE) || IsKeyPressed(KEY_KP_1)) selected = 0;
-        if (IsKeyPressed(KEY_TWO) || IsKeyPressed(KEY_KP_2)) selected = 1;
-        if (IsKeyPressed(KEY_THREE) || IsKeyPressed(KEY_KP_3)) selected = 2;
-        if (IsKeyPressed(KEY_FOUR) || IsKeyPressed(KEY_KP_4)) selected = 3;
-        for (int i = 0; i < 4; i++) {
-            if (Clicked(LogicOptionRect(i))) selected = i;
-        }
+    // Se o pop-up estiver aberto, eu espero o jogador confirmar antes de continuar.
+    if (game->showLogicPopup) {
+        if (IsKeyPressed(KEY_ENTER) || Clicked(LogicPopupButtonRect())) {
+            bool wasCorrect = game->logicPopupCorrect;
+            game->showLogicPopup = false;
 
-        if (selected >= 0) {
-            if (selected == question->correctOption) {
-                question->answered = true;
-                Game_UnlockHint(game, question->hintToUnlock);
-            } else {
-                game->logicErrors++;
+            if (wasCorrect) {
+                game->currentQuestion++;
+                if (game->currentQuestion >= MAX_LOGIC_QUESTIONS) {
+                    *screen = SCREEN_GUESS;
+                    gGuessText[0] = '\0';
+                    game->guessInput = 0;
+                }
             }
         }
-    } else if (IsKeyPressed(KEY_ENTER) || Clicked((Rectangle){565, 580, 690, 30})) {
-        game->currentQuestion++;
-        if (game->currentQuestion >= MAX_LOGIC_QUESTIONS) {
-            *screen = SCREEN_GUESS;
-            gGuessText[0] = '\0';
-            game->guessInput = 0;
+        return;
+    }
+
+    int selected = -1;
+    if (IsKeyPressed(KEY_ONE) || IsKeyPressed(KEY_KP_1)) selected = 0;
+    if (IsKeyPressed(KEY_TWO) || IsKeyPressed(KEY_KP_2)) selected = 1;
+    if (IsKeyPressed(KEY_THREE) || IsKeyPressed(KEY_KP_3)) selected = 2;
+    if (IsKeyPressed(KEY_FOUR) || IsKeyPressed(KEY_KP_4)) selected = 3;
+    for (int i = 0; i < 4; i++) {
+        if (Clicked(LogicOptionRect(i))) selected = i;
+    }
+
+    if (selected >= 0) {
+        if (selected == question->correctOption) {
+            question->answered = true;
+            Game_UnlockHint(game, question->hintToUnlock);
+            game->logicPopupCorrect = true;
+            game->showLogicPopup = true;
+            snprintf(game->logicPopupMessage, sizeof(game->logicPopupMessage),
+                     "Resposta correta. Uma nova pista foi liberada para a fase final.");
+        } else {
+            game->logicErrors++;
+            game->logicPopupCorrect = false;
+            game->showLogicPopup = true;
+            snprintf(game->logicPopupMessage, sizeof(game->logicPopupMessage),
+                     "Resposta incorreta. Revise a proposicao e tente novamente.");
         }
     }
 }
@@ -746,6 +792,10 @@ static void UpdateGuessScreen(CyberGame *game, Screen *screen, int sudokuErrors)
         game->guessInput = atoi(gGuessText);
         Game_HandleGuess(game);
         if (game->completed) {
+            if (!gTimerPaused && gMatchStartTime > 0.01) {
+                gTimerFrozenSeconds = (int)(GetTime() - gMatchStartTime);
+                gTimerPaused = true;
+            }
             Game_CalculateScore(game, sudokuErrors);
             if (!game->saved) {
                 SessionRecord session = Game_ToSession(game);
@@ -825,6 +875,8 @@ static void StartNewGame(CyberGame *game, SudokuGame *sudoku, Screen *screen) {
     Game_Init(game);
     Sudoku_Init(sudoku);
     gMatchStartTime = GetTime();
+    gTimerPaused = false;
+    gTimerFrozenSeconds = 0;
     gGuessText[0] = '\0';
     *screen = SCREEN_INTRO;
 }
@@ -896,6 +948,19 @@ int main(void) {
         ChangeDirectory(appDir);
     }
     History_EnsureFile();
+
+    // Tento colocar o icone do jogo na janela. O .ico tambem vai para o executavel no Windows.
+    const char *iconPath = "assets/icons/diazero_icon.png";
+    if (!FileExists(iconPath)) {
+        iconPath = "game/assets/icons/diazero_icon.png";
+    }
+    if (FileExists(iconPath)) {
+        Image icon = LoadImage(iconPath);
+        if (icon.data != NULL) {
+            SetWindowIcon(icon);
+            UnloadImage(icon);
+        }
+    }
 
     // Carrego o GIF do fundo. Se não achar de primeira, tento outro caminho.
     const char *backgroundPath = "assets/background/36030.gif";

@@ -57,6 +57,9 @@ typedef struct {
     LogicQuestion questions[MAX_LOGIC_QUESTIONS]; // Perguntas do quiz.
     int currentQuestion;               // Pergunta atual.
     int logicErrors;                   // Erros na lógica.
+    bool showLogicPopup;               // Mostra o pop-up depois de responder.
+    bool logicPopupCorrect;            // Diz se o pop-up é de acerto ou erro.
+    char logicPopupMessage[180];       // Texto do pop-up.
 
     int guessInput;                    // Valor digitado no chute.
     int attempts;                      // Tentativas no chute.
