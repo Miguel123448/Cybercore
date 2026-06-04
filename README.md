@@ -189,7 +189,6 @@ timestamp;alvo;tentativas;baixos;altos;palpites_csv
 
 Além da persistência do histórico, também foi trabalhada a criação de um banco de dados de perguntas para o questionário do jogo. Esse banco de perguntas serve para organizar as questões usadas na fase de lógica proposicional, facilitando a manutenção e permitindo aumentar a quantidade de perguntas sem precisar alterar toda a estrutura do jogo.
 
-
 #### Funcionalidades feitas por cada par
 
 | Par | Funcionalidades executadas |
@@ -197,6 +196,16 @@ Além da persistência do histórico, também foi trabalhada a criação de um b
 | **Miguel e Lucas Cavalcante — salvamento das partidas** | Implementou a gravação das partidas no `historico.txt`, usando abertura do arquivo em modo de acréscimo. Esse par ficou responsável por salvar o timestamp, o número alvo, a quantidade de tentativas, os palpites baixos, os palpites altos e a lista de palpites em formato CSV. Também verificou se o arquivo era criado corretamente quando ainda não existia. |
 | **Miguel e Lucas Cavalcante — leitura, análise e integração do histórico** | Implementou a leitura do histórico com `fgets`, separando os campos por `;` e reconstruindo os dados das partidas antigas. Esse par também integrou o histórico com a tela de análise do jogo, permitindo calcular média de tentativas, melhor sessão, pior sessão, desvio padrão, viés baixo/alto e sugestões de estratégia. |
 |  **Miguel e Lucas Cavalcante — Criação do banco de dados com questionário** | Foi criada uma estrutura para armazenar perguntas, alternativas e respostas corretas do questionário. A ideia é permitir que o jogo tenha um conjunto maior de perguntas disponíveis, podendo selecionar questões para a fase de lógica proposicional. |
+
+#### Justificativa do Desenvolvimento Individual nas demais histórias
+
+Como o volume de entregas da sprint era alto (9 histórias no total) e a equipe conta com 7 integrantes, as histórias que não envolviam o núcleo de persistência foram desenvolvidas de forma **individual**. Isso permitiu frentes de trabalho paralelas e respeitou a especialização dos papéis do time:
+
+* **UH1 (Iniciar nova partida) & UH2 (Receber dicas):** Fluxos lineares e estruturas condicionais básicas (`if/else`). Por serem tarefas de menor complexidade técnica, foram resolvidas individualmente para acelerar o setup inicial do jogo.
+* **UH4 (Feedback com busca binária):** O cálculo isolado da busca binária adaptada exigia imersão matemática individual contínua para evitar distrações de escopo.
+* **UH5 (Visualizar estatísticas agregadas):** Uma vez que o par de backend entregou a leitura dos dados, esta história focou puramente na camada de Front-end, sendo tratada de forma autônoma pelas desenvolvedoras de interface.
+* **UH8 (Receber sugestões estratégicas):** Algoritmo analítico condicional para inferência de dicas que correu em paralelo individual enquanto o backend finalizava o banco de dados.
+* **UH9 (Calcular desvio padrão) & UH10 (Identificar monotonicidade):** Requisitos matemáticos complexos focados no uso estrito de **recursão** (pilar da disciplina de PIF). Foram delegados individualmente aos programadores especialistas em C para total concentração na pilha de execução recursiva.
 
 #### O que aprendemos com essa parte
 
