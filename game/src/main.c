@@ -6,14 +6,12 @@
     Sudoku, lógica e chute da frequência.
 */
 
-// Imports do Raylib e dos arquivos que eu criei para separar o jogo.
 #include "raylib.h"
 #include "game.h"
 #include "history.h"
 #include "sudoku.h"
 
 
-// Bibliotecas padrão que uso para texto, tempo, memória e contas simples.
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -21,12 +19,10 @@
 #include <math.h>
 
 
-// Base do layout. Mesmo em tela cheia, eu desenho pensando nesse tamanho.
 #define SCREEN_WIDTH 1366
 #define SCREEN_HEIGHT 768
 
 
-// Cores principais do visual retrô/hacker.
 static const Color CYBER_GREEN = {0, 255, 55, 255};
 static const Color CYBER_DARK_GREEN = {0, 95, 28, 255};
 static const Color CYBER_DIM_GREEN = {0, 150, 35, 145};
@@ -37,14 +33,12 @@ static const Color WIN_SHADOW = {50, 50, 50, 255};
 static const Color TEXT_DARK = {18, 18, 18, 255};
 
 
-// Algumas variáveis globais simples usadas pela interface.
 static double gMatchStartTime = 0.0;
 static bool gTimerPaused = true;
 static int gTimerFrozenSeconds = 0;
 static char gGuessText[8] = "";
 
 
-// Dados do GIF de fundo.
 static Image gBackgroundImage = {0};
 static Texture2D gBackgroundTexture = {0};
 static int gBackgroundFrames = 0;
@@ -53,11 +47,9 @@ static int gBackgroundFrameCounter = 0;
 static bool gBackgroundLoaded = false;
 
 
-// Escala usada para o jogo ficar proporcional em outras resoluções.
 static float gScreenScale = 1.0f;
 static Vector2 gScreenOffset = {0.0f, 0.0f};
 
-// Aqui ajusto a escala da tela para o layout não quebrar no fullscreen.
 static void UpdateFullscreenTransform(void) {
     float scaleX = (float)GetScreenWidth() / (float)SCREEN_WIDTH;
     float scaleY = (float)GetScreenHeight() / (float)SCREEN_HEIGHT;
@@ -68,7 +60,6 @@ static void UpdateFullscreenTransform(void) {
     gScreenOffset.y = ((float)GetScreenHeight() - (float)SCREEN_HEIGHT * gScreenScale) * 0.5f;
 }
 
-// Como a tela pode estar escalada, eu converto a posição real do mouse.
 static Vector2 GetVirtualMousePosition(void) {
     Vector2 mouse = GetMousePosition();
     return (Vector2){
@@ -77,14 +68,12 @@ static Vector2 GetVirtualMousePosition(void) {
     };
 }
 
-// Limita um número para ele não passar do mínimo nem do máximo.
 static int ClampInt(int value, int min, int max) {
     if (value < min) return min;
     if (value > max) return max;
     return value;
 }
 
-// Soma os dígitos do número secreto para montar uma pista.
 static int DigitSum(int value) {
     int sum = 0;
     if (value == 0) return 0;
@@ -95,17 +84,14 @@ static int DigitSum(int value) {
     return sum;
 }
 
-// Verifica clique em um botão ou área da interface.
 static bool Clicked(Rectangle rect) {
     return IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && CheckCollisionPointRec(GetVirtualMousePosition(), rect);
 }
 
-// Verifica se o mouse está em cima de uma área.
 static bool Hovered(Rectangle rect) {
     return CheckCollisionPointRec(GetVirtualMousePosition(), rect);
 }
 
-// Desenha textos maiores quebrando linha automaticamente.
 static void DrawWrappedText(const char *text, int x, int y, int fontSize, int maxWidth, Color color) {
     char buffer[1400];
     snprintf(buffer, sizeof(buffer), "%s", text);
@@ -141,7 +127,6 @@ static void DrawWrappedText(const char *text, int x, int y, int fontSize, int ma
     }
 }
 
-// Desenha o fundo Matrix. Primeiro tenta usar o GIF, senão usa o fundo feito no código.
 static void DrawMatrixBackground(void) {
     ClearBackground(BLACK);
 
@@ -187,7 +172,6 @@ static void DrawMatrixBackground(void) {
     DrawRectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, (Color){0, 0, 0, 70});
 }
 
-// Desenha uma janela no estilo antigo do Windows.
 static void DrawClassicWindow(Rectangle r, const char *title) {
     DrawRectangle((int)r.x + 7, (int)r.y + 7, (int)r.width, (int)r.height, (Color){0, 0, 0, 95});
     DrawRectangleRec(r, WIN_BODY);
@@ -209,7 +193,6 @@ static void DrawClassicWindow(Rectangle r, const char *title) {
     DrawText("x", bx + 44, (int)r.y + 8, 12, BLACK);
 }
 
-// Desenha uma caixinha afundada, tipo display antigo.
 static void DrawClassicInset(Rectangle r, Color fill) {
     DrawRectangleRec(r, fill);
     DrawLine((int)r.x, (int)r.y, (int)(r.x + r.width), (int)r.y, WIN_SHADOW);
@@ -218,7 +201,6 @@ static void DrawClassicInset(Rectangle r, Color fill) {
     DrawLine((int)(r.x + r.width), (int)r.y, (int)(r.x + r.width), (int)(r.y + r.height), WHITE);
 }
 
-// Desenha os botões do jogo no estilo retrô.
 static void DrawClassicButton(Rectangle r, const char *label, bool active, bool disabled) {
     Color fill = disabled ? (Color){170, 170, 170, 255} : (Hovered(r) ? (Color){222, 222, 222, 255} : WIN_BODY_DARK);
     DrawRectangleRec(r, fill);
@@ -232,7 +214,6 @@ static void DrawClassicButton(Rectangle r, const char *label, bool active, bool 
     DrawText(label, (int)(r.x + r.width / 2 - tw / 2), (int)(r.y + r.height / 2 - fs / 2), fs, disabled ? GRAY : TEXT_DARK);
 }
 
-// Desenha o painel do título no canto da tela.
 static void DrawHeaderPanel(void) {
     Rectangle panel = {16, 18, 382, 166};
     DrawRectangleRec(panel, (Color){0, 0, 0, 205});
@@ -249,7 +230,6 @@ static void DrawHeaderPanel(void) {
     DrawText("Restaure o sistema.", 48, 142, 15, CYBER_GREEN);
 }
 
-// Desenha o cronômetro da partida.
 static void DrawTimerWindow(double startTime) {
     Rectangle r = {44, 206, 238, 130};
     DrawClassicWindow(r, "Cronometro");
@@ -268,7 +248,6 @@ static void DrawTimerWindow(double startTime) {
     DrawText("Tempo de invasao", 88, 318, 15, CYBER_DARK_GREEN);
 }
 
-// Desenha o painel de status do sistema.
 static void DrawSystemWindow(const CyberGame *game, Screen screen) {
     Color systemGreen = CYBER_DARK_GREEN;
     Rectangle r = {18, 602, 318, 136};
@@ -291,7 +270,6 @@ static void DrawSystemWindow(const CyberGame *game, Screen screen) {
     DrawRectangle(116, 711, (int)(176 * (freq / 100.0f)), 13, systemGreen);
 }
 
-// Coisas que aparecem em praticamente todas as telas.
 static void DrawGlobalDesktop(const CyberGame *game, Screen screen) {
     DrawMatrixBackground();
     DrawHeaderPanel();
@@ -301,18 +279,15 @@ static void DrawGlobalDesktop(const CyberGame *game, Screen screen) {
     DrawText("v2.0 - Dia Zero OS", 1243, 724, 12, CYBER_GREEN);
 }
 
-// Libera uma pista quando o jogador avança no jogo.
 void Game_UnlockHint(CyberGame *game, int index) {
     if (index >= 0 && index < game->totalHints) {
         game->hintUnlocked[index] = true;
     }
 }
 
-// Começa uma nova partida, sorteando o número e preparando pistas e perguntas.
 void Game_Init(CyberGame *game) {
     memset(game, 0, sizeof(*game));
 
-    // Sorteio o número secreto e calculo dados para criar pistas verdadeiras.
     game->secretNumber = (rand() % 100) + 1;
     game->basicMin = ((game->secretNumber - 1) / 25) * 25 + 1;
     game->basicMax = ClampInt(game->basicMin + 24, 1, 100);
@@ -321,15 +296,12 @@ void Game_Init(CyberGame *game) {
     game->digitSum = DigitSum(game->secretNumber);
     game->totalHints = 5;
 
-    // As primeiras pistas são mais abertas e depois ficam mais específicas.
     snprintf(game->hints[0], sizeof(game->hints[0]), "Frequencia entre %d e %d", game->basicMin, game->basicMax);
     snprintf(game->hints[1], sizeof(game->hints[1]), "Paridade: %s", (game->secretNumber % 2 == 0) ? "PAR" : "IMPAR");
     snprintf(game->hints[2], sizeof(game->hints[2]), "Intervalo refinado: %d a %d", game->decadeMin, game->decadeMax);
     snprintf(game->hints[3], sizeof(game->hints[3]), "%s multipla de 5", (game->secretNumber % 5 == 0) ? "E" : "NAO E");
     snprintf(game->hints[4], sizeof(game->hints[4]), "Soma dos digitos: %d", game->digitSum);
 
-    // Aqui fica o banco de perguntas da fase de lógica.
-    // A partida continua tendo só 3 perguntas, mas elas são sorteadas desse banco.
     static const LogicQuestion questionBank[] = {
         {
             "P: a frequencia esta no intervalo do Sudoku. Q: a paridade liberada esta correta. Se P E Q sao verdadeiros, qual conclusao e valida?",
@@ -480,12 +452,10 @@ void Game_Init(CyberGame *game) {
     int totalBankQuestions = (int)(sizeof(questionBank) / sizeof(questionBank[0]));
     int indexes[sizeof(questionBank) / sizeof(questionBank[0])];
 
-    // Primeiro monto uma lista com todos os índices do banco.
     for (int i = 0; i < totalBankQuestions; i++) {
         indexes[i] = i;
     }
 
-    // Depois embaralho os índices para escolher perguntas diferentes a cada partida.
     for (int i = totalBankQuestions - 1; i > 0; i--) {
         int j = rand() % (i + 1);
         int temp = indexes[i];
@@ -493,8 +463,6 @@ void Game_Init(CyberGame *game) {
         indexes[j] = temp;
     }
 
-    // Copio só 3 perguntas sorteadas para a partida atual.
-    // Cada acerto libera uma pista nova, mantendo a progressão do jogo.
     for (int i = 0; i < MAX_LOGIC_QUESTIONS; i++) {
         game->questions[i] = questionBank[indexes[i]];
         game->questions[i].answered = false;
@@ -504,7 +472,6 @@ void Game_Init(CyberGame *game) {
     snprintf(game->feedback, sizeof(game->feedback), "Use as pistas para reduzir o intervalo de busca.");
 }
 
-// Aqui trato o chute do jogador e dou o feedback de alto, baixo ou certo.
 void Game_HandleGuess(CyberGame *game) {
     int guess = game->guessInput;
 
@@ -530,7 +497,6 @@ void Game_HandleGuess(CyberGame *game) {
     }
 }
 
-// Calcula a pontuação final da partida.
 void Game_CalculateScore(CyberGame *game, int sudokuErrors) {
     int score = 1000;
     score -= sudokuErrors * 40;
@@ -555,7 +521,6 @@ void Game_CalculateScore(CyberGame *game, int sudokuErrors) {
     }
 }
 
-// Passa os dados da partida para o formato salvo no histórico.
 SessionRecord Game_ToSession(const CyberGame *game) {
     SessionRecord session;
     memset(&session, 0, sizeof(session));
@@ -583,7 +548,6 @@ SessionRecord Game_ToSession(const CyberGame *game) {
     return session;
 }
 
-// Mostra as pistas que o jogador já conseguiu.
 static void DrawHintsWindow(const CyberGame *game, Rectangle r, const char *title) {
     DrawClassicWindow(r, title);
     DrawText("Pistas coletadas", (int)r.x + 22, (int)r.y + 48, 20, TEXT_DARK);
@@ -602,12 +566,10 @@ static void DrawHintsWindow(const CyberGame *game, Rectangle r, const char *titl
     }
 }
 
-// Define a posição dos botões do menu.
 static Rectangle MenuButtonRect(int index) {
     return (Rectangle){520, 342 + index * 62, 340, 46};
 }
 
-// Desenha o menu inicial.
 static void DrawMenu(void) {
     Rectangle win = {470, 178, 440, 455};
     DrawClassicWindow(win, "Controle de Acesso");
@@ -622,7 +584,6 @@ static void DrawMenu(void) {
     DrawText("Fluxo: Sudoku -> Logica -> Chute", 515, 595, 17, DARKGRAY);
 }
 
-// Tela que explica a missão antes do jogo começar.
 static void DrawIntro(void) {
     Rectangle win = {430, 185, 760, 390};
     DrawClassicWindow(win, "Briefing da Missao");
@@ -635,17 +596,14 @@ static void DrawIntro(void) {
     DrawClassicButton((Rectangle){572, 492, 470, 52}, "Pressione ENTER para iniciar", false, false);
 }
 
-// Define onde ficam os botões das alternativas.
 static Rectangle LogicOptionRect(int i) {
     return (Rectangle){565, 340 + i * 58, 690, 42};
 }
 
-// Botao usado no pop-up de acerto/erro da fase de logica.
 static Rectangle LogicPopupButtonRect(void) {
     return (Rectangle){620, 482, 240, 42};
 }
 
-// Mostra um aviso simples depois que o jogador responde uma pergunta de logica.
 static void DrawLogicFeedbackPopup(const CyberGame *game) {
     DrawRectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, (Color){0, 0, 0, 115});
 
@@ -658,7 +616,6 @@ static void DrawLogicFeedbackPopup(const CyberGame *game) {
     DrawClassicButton(LogicPopupButtonRect(), "Continuar", false, false);
 }
 
-// Desenha a tela do quiz de lógica.
 static void DrawLogicScreen(CyberGame *game) {
     Rectangle win = {515, 108, 800, 520};
     DrawClassicWindow(win, "Fase 2 - Raciocinio Logico");
@@ -691,11 +648,9 @@ static void DrawLogicScreen(CyberGame *game) {
     }
 }
 
-// Atualiza a fase de lógica, vendo se a resposta está certa ou errada.
 static void UpdateLogicScreen(CyberGame *game, Screen *screen) {
     LogicQuestion *question = &game->questions[game->currentQuestion];
 
-    // Se o pop-up estiver aberto, eu espero o jogador confirmar antes de continuar.
     if (game->showLogicPopup) {
         if (IsKeyPressed(KEY_ENTER) || Clicked(LogicPopupButtonRect())) {
             bool wasCorrect = game->logicPopupCorrect;
@@ -740,7 +695,6 @@ static void UpdateLogicScreen(CyberGame *game, Screen *screen) {
     }
 }
 
-// Desenha a fase final de chute da frequência.
 static void DrawGuessScreen(const CyberGame *game) {
     Rectangle win = {390, 245, 880, 415};
     DrawClassicWindow(win, "Fase 3 - Quebra de Frequencia");
@@ -771,7 +725,6 @@ static void DrawGuessScreen(const CyberGame *game) {
     DrawText(TextFormat("Tentativas: %d | Baixos: %d | Altos: %d", game->attempts, game->lows, game->highs), 897, 597, 17, CYBER_DARK_GREEN);
 }
 
-// Lida com o texto digitado no chute e salva a partida quando acerta.
 static void UpdateGuessScreen(CyberGame *game, Screen *screen, int sudokuErrors) {
     int key = GetCharPressed();
     while (key > 0) {
@@ -810,7 +763,6 @@ static void UpdateGuessScreen(CyberGame *game, Screen *screen, int sudokuErrors)
     }
 }
 
-// Mostra o resultado da partida.
 static void DrawResultScreen(const CyberGame *game, const SudokuGame *sudoku) {
     Rectangle win = {420, 150, 760, 455};
     DrawClassicWindow(win, "Resultado da Invasao");
@@ -826,7 +778,6 @@ static void DrawResultScreen(const CyberGame *game, const SudokuGame *sudoku) {
     DrawClassicButton((Rectangle){825, 525, 260, 46}, "H - Historico", false, false);
 }
 
-// Mostra o histórico salvo no arquivo txt e a análise.
 static void DrawHistoryScreen(void) {
     SessionRecord sessions[MAX_SESSIONS];
     int count = History_LoadSessions(sessions, MAX_SESSIONS);
@@ -858,7 +809,6 @@ static void DrawHistoryScreen(void) {
     DrawClassicButton((Rectangle){694, 598, 300, 36}, "ENTER/H - voltar", false, false);
 }
 
-// Tela com as instruções de como jogar.
 static void DrawHelpScreen(void) {
     Rectangle win = {390, 105, 890, 555};
     DrawClassicWindow(win, "Como Jogar");
@@ -870,7 +820,6 @@ static void DrawHelpScreen(void) {
     DrawClassicButton((Rectangle){690, 585, 300, 42}, "ENTER - voltar", false, false);
 }
 
-// Reinicia tudo para começar uma partida nova.
 static void StartNewGame(CyberGame *game, SudokuGame *sudoku, Screen *screen) {
     Game_Init(game);
     Sudoku_Init(sudoku);
@@ -882,7 +831,6 @@ static void StartNewGame(CyberGame *game, SudokuGame *sudoku, Screen *screen) {
 }
 
 
-// Retângulos dos botões da janela de confirmação de saída.
 static Rectangle ExitYesButtonRect(void) {
     return (Rectangle){520, 462, 170, 42};
 }
@@ -891,7 +839,6 @@ static Rectangle ExitNoButtonRect(void) {
     return (Rectangle){715, 462, 190, 42};
 }
 
-// Essa janela evita que o jogo feche direto quando apertar ESC sem querer.
 static void DrawExitConfirmModal(void) {
     DrawRectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, (Color){0, 0, 0, 135});
 
@@ -908,7 +855,6 @@ static void DrawExitConfirmModal(void) {
     DrawClassicButton(ExitNoButtonRect(), "Nao, voltar", false, false);
 }
 
-// Aqui trato os comandos da confirmação de saída.
 static void UpdateExitConfirmModal(bool *showExitConfirm, bool *exitRequested) {
     if (IsKeyPressed(KEY_ENTER) || IsKeyPressed(KEY_S) || Clicked(ExitYesButtonRect())) {
         *exitRequested = true;
@@ -920,17 +866,13 @@ static void UpdateExitConfirmModal(bool *showExitConfirm, bool *exitRequested) {
     }
 }
 
-// Função principal: inicia o Raylib, carrega os arquivos e roda o loop do jogo.
 int main(void) {
-    // Inicio o rand para o número e o Sudoku mudarem a cada jogo.
     srand((unsigned int)time(NULL));
 
-    // Crio a janela do Raylib.
     SetConfigFlags(FLAG_VSYNC_HINT);
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Dia Zero - Quebra de Frequencia");
     SetExitKey(KEY_NULL); // Assim o ESC nao fecha o Raylib sozinho.
 
-    // Coloco a janela em fullscreen usando o tamanho do monitor.
     int monitor = GetCurrentMonitor();
     int monitorWidth = GetMonitorWidth(monitor);
     int monitorHeight = GetMonitorHeight(monitor);
@@ -941,15 +883,12 @@ int main(void) {
 
     SetTargetFPS(60);
 
-    // Deixo o jogo procurando os arquivos a partir da pasta do executável.
-    // Assim o historico.txt fica junto do jogo.
     const char *appDir = GetApplicationDirectory();
     if (appDir != NULL && appDir[0] != '\0') {
         ChangeDirectory(appDir);
     }
     History_EnsureFile();
 
-    // Tento colocar o icone do jogo na janela. O .ico tambem vai para o executavel no Windows.
     const char *iconPath = "assets/icons/diazero_icon.png";
     if (!FileExists(iconPath)) {
         iconPath = "game/assets/icons/diazero_icon.png";
@@ -962,7 +901,6 @@ int main(void) {
         }
     }
 
-    // Carrego o GIF do fundo. Se não achar de primeira, tento outro caminho.
     const char *backgroundPath = "assets/background/36030.gif";
     if (!FileExists(backgroundPath)) {
         backgroundPath = "game/assets/background/36030.gif";
@@ -983,7 +921,6 @@ int main(void) {
         }
     }
 
-    // Estado inicial: começa no menu.
     Screen screen = SCREEN_MENU;
     bool exitRequested = false;
     bool showExitConfirm = false;
@@ -992,7 +929,6 @@ int main(void) {
     Game_Init(&game);
     Sudoku_Init(&sudoku);
 
-    // Loop principal do jogo.
     while (!exitRequested) {
         UpdateFullscreenTransform();
 
@@ -1000,14 +936,11 @@ int main(void) {
             ToggleFullscreen();
         }
 
-        // Primeiro trato a confirmação de saída.
-        // Se a janela estiver aberta, eu não deixo a tela de trás receber cliques.
         if (showExitConfirm) {
             UpdateExitConfirmModal(&showExitConfirm, &exitRequested);
         } else if (WindowShouldClose() || IsKeyPressed(KEY_ESCAPE)) {
             showExitConfirm = true;
         } else {
-            // Primeiro atualizo os comandos e mudanças de tela.
             switch (screen) {
                 case SCREEN_MENU:
                     if (IsKeyPressed(KEY_ENTER) || Clicked(MenuButtonRect(0))) StartNewGame(&game, &sudoku, &screen);
@@ -1054,7 +987,6 @@ int main(void) {
             }
         }
 
-        // Depois desenho o frame na tela.
         BeginDrawing();
         ClearBackground(BLACK);
         BeginMode2D((Camera2D){
@@ -1066,7 +998,6 @@ int main(void) {
 
         DrawGlobalDesktop(&game, screen);
 
-        // Desenho apenas a tela que está aberta agora.
         switch (screen) {
             case SCREEN_MENU:
                 DrawMenu();
@@ -1115,7 +1046,6 @@ int main(void) {
         EndDrawing();
     }
 
-    // Libero o GIF e a textura antes de fechar.
     if (gBackgroundTexture.id != 0) {
         UnloadTexture(gBackgroundTexture);
     }

@@ -8,40 +8,34 @@
 #include "history.h"
 
 
-// Bibliotecas usadas para arquivo, texto e cálculo.
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
 
-// Soma as tentativas de todas as partidas usando recursão.
 static int RecursiveSumAttempts(const SessionRecord sessions[], int count) {
     if (count <= 0) return 0;
     return sessions[count - 1].attempts + RecursiveSumAttempts(sessions, count - 1);
 }
 
-// Acha a melhor partida, que é a com menos tentativas.
 static int RecursiveMinAttempts(const SessionRecord sessions[], int count) {
     if (count <= 1) return sessions[0].attempts;
     int minRest = RecursiveMinAttempts(sessions, count - 1);
     return sessions[count - 1].attempts < minRest ? sessions[count - 1].attempts : minRest;
 }
 
-// Acha a pior partida, que é a com mais tentativas.
 static int RecursiveMaxAttempts(const SessionRecord sessions[], int count) {
     if (count <= 1) return sessions[0].attempts;
     int maxRest = RecursiveMaxAttempts(sessions, count - 1);
     return sessions[count - 1].attempts > maxRest ? sessions[count - 1].attempts : maxRest;
 }
 
-// Soma as diferenças ao quadrado para depois calcular o desvio padrão.
 static double RecursiveSquareDiff(const SessionRecord sessions[], int count, double mean) {
     if (count <= 0) return 0.0;
     double diff = (double)sessions[count - 1].attempts - mean;
     return diff * diff + RecursiveSquareDiff(sessions, count - 1, mean);
 }
 
-// Soma a média de chutes baixos.
 static double RecursiveLowBias(const SessionRecord sessions[], int count) {
     if (count <= 0) return 0.0;
     double current = sessions[count - 1].attempts > 0 ?
@@ -49,7 +43,6 @@ static double RecursiveLowBias(const SessionRecord sessions[], int count) {
     return current + RecursiveLowBias(sessions, count - 1);
 }
 
-// Soma a média de chutes altos.
 static double RecursiveHighBias(const SessionRecord sessions[], int count) {
     if (count <= 0) return 0.0;
     double current = sessions[count - 1].attempts > 0 ?
@@ -57,7 +50,6 @@ static double RecursiveHighBias(const SessionRecord sessions[], int count) {
     return current + RecursiveHighBias(sessions, count - 1);
 }
 
-// Conta se o jogador ficou chutando em sequência.
 static int RecursiveMonotonicSteps(const int guesses[], int count, int index) {
     if (index >= count - 1) return 0;
 
@@ -69,7 +61,6 @@ static int RecursiveMonotonicSteps(const int guesses[], int count, int index) {
     return step + RecursiveMonotonicSteps(guesses, count, index + 1);
 }
 
-// Junta essa contagem para todas as partidas.
 static int RecursiveTotalMonotonic(const SessionRecord sessions[], int count) {
     if (count <= 0) return 0;
     int current = RecursiveMonotonicSteps(
@@ -81,7 +72,6 @@ static int RecursiveTotalMonotonic(const SessionRecord sessions[], int count) {
 }
 
 
-// Garante que o arquivo historico.txt exista.
 bool History_EnsureFile(void) {
     FILE *file = fopen(HISTORY_FILE, "a");
     if (file == NULL) {
@@ -91,7 +81,6 @@ bool History_EnsureFile(void) {
     return true;
 }
 
-// Salva uma nova partida no final do historico.txt.
 bool History_SaveSession(const SessionRecord *session) {
     FILE *file = fopen(HISTORY_FILE, "a");
     if (file == NULL) {
@@ -108,7 +97,6 @@ bool History_SaveSession(const SessionRecord *session) {
         session->highs
     );
 
-    // Salvo os palpites separados por vírgula.
     for (int i = 0; i < session->guessCount; i++) {
         fprintf(file, "%d", session->guesses[i]);
         if (i < session->guessCount - 1) {
@@ -121,7 +109,6 @@ bool History_SaveSession(const SessionRecord *session) {
     return true;
 }
 
-// Lê o historico.txt linha por linha e monta as partidas de volta.
 int History_LoadSessions(SessionRecord sessions[], int maxSessions) {
     FILE *file = fopen(HISTORY_FILE, "r");
     if (file == NULL) {
@@ -140,7 +127,6 @@ int History_LoadSessions(SessionRecord sessions[], int maxSessions) {
 
         SessionRecord session = {0};
 
-        // Separo os campos pelo ponto e vírgula.
         char *field = strtok(line, ";");
         if (field == NULL) continue;
         snprintf(session.timestamp, sizeof(session.timestamp), "%s", field);
@@ -163,7 +149,6 @@ int History_LoadSessions(SessionRecord sessions[], int maxSessions) {
 
         field = strtok(NULL, ";");
         if (field != NULL) {
-            // O último campo tem os palpites separados por vírgula.
             char *guessToken = strtok(field, ",");
             while (guessToken != NULL && session.guessCount < MAX_GUESSES) {
                 session.guesses[session.guessCount++] = atoi(guessToken);
@@ -178,7 +163,6 @@ int History_LoadSessions(SessionRecord sessions[], int maxSessions) {
     return count;
 }
 
-// Monta o relatório de análise do histórico.
 AnalysisReport History_BuildReport(const SessionRecord sessions[], int count) {
     AnalysisReport report;
     memset(&report, 0, sizeof(report));
@@ -189,7 +173,6 @@ AnalysisReport History_BuildReport(const SessionRecord sessions[], int count) {
         return report;
     }
 
-    // Aqui calculo as estatísticas principais.
     int totalAttempts = RecursiveSumAttempts(sessions, count);
     report.averageAttempts = (double)totalAttempts / (double)count;
     report.bestAttempts = RecursiveMinAttempts(sessions, count);
@@ -203,7 +186,6 @@ AnalysisReport History_BuildReport(const SessionRecord sessions[], int count) {
     report.averageHighBias = RecursiveHighBias(sessions, count) / (double)count;
     report.monotonicSteps = RecursiveTotalMonotonic(sessions, count);
 
-    // Aqui escolho uma sugestão baseada no jeito que o jogador chutou.
     if (report.averageLowBias > 0.60) {
         snprintf(report.suggestion, sizeof(report.suggestion), "Tendencia: muitos palpites abaixo do alvo. Use as pistas para iniciar mais perto do intervalo correto.");
     } else if (report.averageHighBias > 0.60) {
