@@ -10,7 +10,7 @@ Projeto Integrador 2026.1 – Programação Imperativa e Funcional (PIF)
 
 ## 📖 Sinopse
 
-Você é um analista de segurança da CyberCore. Um ataque hacker está injetando uma frequência desconhecida (entre 1 e 100 MHz) nos servidores. Para neutralizar a invasão, você deve **descobrir a frequência alvo** com o menor número de tentativas possível. A cada palpite, o sistema informa se a frequência é muito baixa, muito alta ou correta. Cada partida é registrada em um arquivo de histórico, permitindo estatísticas e sugestões de melhoria.
+Você é um analista de segurança da CyberCore. Um ataque hacker está injetando uma frequência desconhecida (entre 1 e 100 MHz) nos servidores. Para neutralizar a invasão, você deve **descobrir a frequência alvo** com o menor número de tentativas possível. A cada palpite, o sistema informa se a frequência está correta ou não. Você pode conquistar dicas com os desafios de Sudoku e Perguntas Lógicas, que vão te ajudar a combater o hacker. Cada partida é registrada em um arquivo de histórico, permitindo estatísticas e sugestões de melhoria.
 
 ## 👥 Equipe
 
