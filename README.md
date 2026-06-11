@@ -236,9 +236,9 @@ Uma dificuldade que percebemos na programação em par foi conseguir conciliar o
 
 ---
 
-## 🚀 Entrega 04 – Conclusão do Projeto, Novas Sprints, Deploy e Práticas Ágeis
+## 🚀  – Conclusão do Projeto, Novas Sprints, Deploy e Práticas Ágeis
 
-A Entrega 04 consolida o encerramento do ciclo de desenvolvimento do jogo Dia Zero. Implementamos todas as 10 histórias planejadas, gerenciamos as etapas finais através de novas Sprints no board, efetuamos o deploy prático via GitHub Releases, disponibilizamos a documentação de ambiente e estendemos as práticas de programação em pares.
+A  consolida o encerramento do ciclo de desenvolvimento do jogo Dia Zero. Implementamos todas as 10 histórias planejadas, gerenciamos as etapas finais através de novas Sprints no board, efetuamos o deploy prático via GitHub Releases, disponibilizamos a documentação de ambiente e estendemos as práticas de programação em pares.
 
 ### 🗺️ Divisão e Criação de Novas Sprints no Board
 Para organizar as frentes finais de trabalho após a Entrega 03, mapeamos o fluxo restante do projeto dividindo as atividades em duas novas Sprints controladas via marcos temporais no Trello:
@@ -291,7 +291,7 @@ O quadro Kanban foi totalmente atualizado para refletir a conclusão total das t
 
 O screencast final detalha o funcionamento integrado do jogo com ênfase na reprodução sonora e musical da UH7. **Nota:** A URL pública de deploy da Release do GitHub é explicitamente exibida em tela no início da demonstração.
 
-*   📺 [Assista ao Screencast de Encerramento - Entrega 04](`[INSIRA_AQUI_O_LINK_DO_SEU_NOVO_VIDEO_DO_DRIVE]`)
+*   📺 [Assista ao Screencast de Encerramento - Entrega 04](https://drive.google.com/file/d/13kndtLLZsLunJWONk4gC94XCAP4BFMmV/view?usp=sharing)
 
 ---
 
