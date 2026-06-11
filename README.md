@@ -280,10 +280,10 @@ Como a aplicação foi construída em linguagem C nativa para execução local, 
 O quadro Kanban foi totalmente atualizado para refletir a conclusão total das tarefas, com a migração da **UH7** e dos testes da sprint para a coluna final.
 
 **Print do Quadro Kanban Finalizado:**  
-![Quadro Kanban Final](./assets/entrega04/kanban-final.png)
+![Quadro Kanban Final](./assets/entrega04/kanban-final.PNG)
 
 **Print do Issue/Bug Tracker Atualizado (GitHub):**  
-![Issues do GitHub Atualizadas](./assets/entrega04/issues-final.png)
+![Issues do GitHub Atualizadas](./assets/entrega04/issues-final.PNG)
 
 ---
 
