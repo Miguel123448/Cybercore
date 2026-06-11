@@ -10,7 +10,7 @@ Projeto Integrador 2026.1 – Programação Imperativa e Funcional (PIF)
 
 ## 📖 Sinopse
 
-Você é um analista de segurança da CyberCore. Um ataque hacker está injetando uma frequência desconhecida (entre 1 e 100 MHz) nos servidores. Para neutralizar a invasão, você deve **descobrir a frequência alvo** com o menor número de tentativas possível. A cada palpite, o sistema informa se a frequência está correta ou não. Você pode conquistar dicas com os desafios de Sudoku e Perguntas Lógicas, que vão te ajudar a combater o hacker. Cada partida é registrada em um arquivo de histórico, permitindo estatísticas e sugestões de melhoria.
+Você é um analista de segurança da Dia Zero. Um ataque hacker está injetando uma frequência desconhecida (entre 1 e 100 MHz) nos servidores. Para neutralizar a invasão, você deve **descobrir a frequência alvo** com o menor número de tentativas possível. A cada palpite, o sistema informa se a frequência está correta ou não. Você pode conquistar dicas com os desafios de Sudoku e Perguntas Lógicas, que vão te ajudar a combater o hacker. Cada partida é registrada em um arquivo de histórico, permitindo estatísticas e sugestões de melhoria.
 
 ## 👥 Equipe
 
@@ -42,7 +42,7 @@ As 10 histórias completas estão disponíveis no [quadro do Trello](https://tre
 
 ### Protótipos de Baixa Fidelidade (Lo-Fi)
 Os protótipos iniciais foram desenvolvidos no Figma para validar o fluxo de navegação e a hierarquia de informações.
-- 🔗 [Acesse o protótipo no Figma aqui](https://www.figma.com/make/hvzhHgR8lGsDkOvLYZvtSs/CyberCore-Game-Prototype?t=PWjPK4Py01ldBkYl-20&fullscreen=1)
+- 🔗 [Acesse o protótipo no Figma aqui](https://www.figma.com/make/hvzhHgR8lGsDkOvLYZvtSs/Dia Zero-Game-Prototype?t=PWjPK4Py01ldBkYl-20&fullscreen=1)
 
 ### Sketches e Storyboards
 Abaixo estão os esboços manuais e a sequência narrativa das principais interações (mínimo de 10 unidades).
@@ -236,8 +236,94 @@ Uma dificuldade que percebemos na programação em par foi conseguir conciliar o
 
 ---
 
-## 🚀 Próximas etapas
-- **Entrega 04:** Projeto final polido, testes finais e documentação.
+## 🚀 Entrega 04 – Conclusão do Projeto, Novas Sprints, Deploy e Práticas Ágeis
+
+A Entrega 04 consolida o encerramento do ciclo de desenvolvimento do jogo Dia Zero. Implementamos todas as 10 histórias planejadas, gerenciamos as etapas finais através de novas Sprints no board, efetuamos o deploy prático via GitHub Releases, disponibilizamos a documentação de ambiente e estendemos as práticas de programação em pares.
+
+### 🗺️ Divisão e Criação de Novas Sprints no Board
+Para organizar as frentes finais de trabalho após a Entrega 03, mapeamos o fluxo restante do projeto dividindo as atividades em duas novas Sprints controladas via marcos temporais no Trello:
+
+* **Sprint 01 (Legado da E03):** Implementação da base do sistema e das regras de negócio principais (**UH1, UH2, UH3, UH4, UH5, UH6, UH8, UH9 e UH10**).
+* **Sprint 02 (Foco: Qualidade e Refinamento):** Ciclo dedicado à varredura e resolução de bugs (Issue Tracker), refinamento dos algoritmos matemáticos complexos de recursão já implementados e execução do Plano de Testes de Sistema (CT01 a CT07).
+* **Sprint 03 (Foco: Recursos Multimídia e Produção):** Ciclo focado no desenvolvimento da última história do backlog (**UH7 - Adicionar música de fundo** com a biblioteca Raylib), validação dos testes de áudio (CT08), preparação do pacote de deploy no GitHub Releases (CT09) e redação das diretrizes do `CONTRIBUTING.md`.
+
+### 🛠️ Escopo Final e Histórias Implementadas
+
+Com a conclusão da Sprint 03, a equipe atingiu **100% de conclusão do backlog original (10 de 10 histórias concluídas)**.
+
+| História | Funcionalidade | Status |
+| :--- | :--- | :---: |
+| **UH1** | Iniciar nova partida | ✅ Concluída |
+| **UH2** | Receber dicas “muito alto / muito baixo” | ✅ Concluída |
+| **UH3** | Registrar sessão no histórico | ✅ Concluída |
+| **UH4** | Feedback comparativo com busca binária | ✅ Concluída |
+| **UH5** | Visualizar estatísticas agregadas do histórico | ✅ Concluída |
+| **UH6** | Recuperar histórico ao iniciar o programa | ✅ Concluída |
+| **UH7** | Adicionar música de fundo | ✅ Concluída |
+| **UH8** | Receber sugestões estratégicas personalizadas | ✅ Concluída |
+| **UH9** | Calcular desvio padrão usando recursão | ✅ Concluída |
+| **UH10** | Identificar monotonicidade dos palpites (recursivo) | ✅ Concluída |
+
+---
+
+### 📦 Deploy e Distribuição do Produto
+
+Como a aplicação foi construída em linguagem C nativa para execução local, o deploy oficial do sistema foi realizado por meio do **GitHub Releases**. A URL disponibiliza o pacote binário estável, acompanhado de todos os assets de som compilados e prontos para execução direta.
+
+*   🔗 **URL Oficial de Deploy (Downloads/Releases):** `[INSIRA_AQUI_O_LINK_DA_ABA_RELEASES_DO_SEU_GITHUB]`
+*   📄 **Manual Técnico de Setup:** [`CONTRIBUTING.md`](./CONTRIBUTING.md) *(Documentação que conduz qualquer pessoa a configurar as dependências da Raylib, clonar o repositório e compilar o ambiente local sem erros).*
+
+---
+
+### 📊 Quadro Kanban Atualizado (Encerramento)
+
+O quadro Kanban foi totalmente atualizado para refletir a conclusão total das tarefas, com a migração da **UH7** e dos testes da sprint para a coluna final.
+
+**Print do Quadro Kanban Finalizado:**  
+![Quadro Kanban Final](./assets/entrega04/kanban-final.png)
+
+**Print do Issue/Bug Tracker Atualizado (GitHub):**  
+![Issues do GitHub Atualizadas](./assets/entrega04/issues-final.png)
+
+---
+
+### 📺 Screencast da Entrega 04
+
+O screencast final detalha o funcionamento integrado do jogo com ênfase na reprodução sonora e musical da UH7. **Nota:** A URL pública de deploy da Release do GitHub é explicitamente exibida em tela no início da demonstração.
+
+*   📺 [Assista ao Screencast de Encerramento - Entrega 04](`[INSIRA_AQUI_O_LINK_DO_SEU_NOVO_VIDEO_DO_DRIVE]`)
+
+---
+
+### 🧪 Testes de Sistema Finais
+
+O plano de testes de sistema foi expandido para garantir a integridade dos novos recursos de áudio adicionados na UH7 e o empacotamento do deploy.
+
+| Caso de Teste | O que foi testado | Resultado Esperado | Resultado Obtido | Status |
+| :--- | :--- | :--- | :--- | :---: |
+| **CT01 a CT07** | Funcionalidades de Lógica e Dados | Manutenção do comportamento estável da E03 | Conforme documentado na E03 | [OK] |
+| **CT08** | Sistema de Áudio da UH7 | Música inicializar junto ao jogo e parar corretamente | Áudio fluido e integrado com Raylib | [OK] |
+| **CT09** | Integridade do Deploy (Release) | Baixar o pacote pela URL pública e rodar localmente | Jogo executa perfeitamente com assets | [OK] |
+
+> *Nota: Os screencasts comprovando a execução isolada de cada teste foram anexados individualmente em seus respectivos cartões dentro do Trello.*
+
+---
+
+---
+
+### 👥 Atualização e Evolução da Programação em Par
+
+Após as experiências relatadas na Entrega 03, a equipe realizou uma avaliação interna sobre a dinâmica de trabalho e **optou por não realizar novas sessões de programação em par na reta final (Sprints 02 e 03)**. 
+
+Entendemos que a prática cumpriu perfeitamente o seu papel específico na modelagem inicial do núcleo de persistência em arquivos e no banco de dados de questionários em `.txt`. Contudo, para as atividades de encerramento, o time concluiu que novas sessões não eram mais necessárias.
+
+#### Justificativa da abordagem individual na reta final:
+* **Especialização e Eficiência:** Identificamos que algumas histórias de usuário e tarefas eram, por natureza, muito melhor executadas de forma individual. A implementação da última história (**UH7 - Música de fundo com Raylib**), por exemplo, exigia uma imersão técnica contínua e foco isolado para acoplamento do áudio na biblioteca, onde o pareamento traria mais gargalo de comunicação do que agilidade.
+* **Otimização de Prazos:** Com o prazo final apertado da Entrega 04, dividir o time em frentes autônomas paralelas (um focado nos testes finais, outro na resolução das issues/bugs pendentes e outro na estruturação do deploy) garantiu que 100% do backlog fosse concluído a tempo, algo que seria inviável se estivéssemos travados em agendas de pareamento.
+
+**Lição Aprendida:** A maior lição da equipe sobre Engenharia de Software Prática foi aprender a identificar quando aplicar uma técnica ágil e quando abandoná-la em prol da produtividade do time.
+
+---
 
 ## 📚 Tecnologias
 - Linguagem C (padrão C11)
@@ -248,6 +334,3 @@ Uma dificuldade que percebemos na programação em par foi conseguir conciliar o
 
 ## 📄 Licença
 Projeto acadêmico – sem fins comerciais.
-
----
-*Repositório criado para a disciplina de PIF – Prof. mr-costaalencar*
