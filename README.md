@@ -270,7 +270,7 @@ Com a conclusão da Sprint 03, a equipe atingiu **100% de conclusão do backlog 
 
 Como a aplicação foi construída em linguagem C nativa para execução local, o deploy oficial do sistema foi realizado por meio do **GitHub Releases**. A URL disponibiliza o pacote binário estável, acompanhado de todos os assets de som compilados e prontos para execução direta.
 
-*   🔗 **URL Oficial de Deploy (Downloads/Releases):** `[INSIRA_AQUI_O_LINK_DA_ABA_RELEASES_DO_SEU_GITHUB]`
+*   🔗 **URL Oficial de Deploy (Downloads/Releases):** (https://github.com/Miguel123448/Cybercore/releases/tag/v1.0.0)
 *   📄 **Manual Técnico de Setup:** [`CONTRIBUTING.md`](./CONTRIBUTING.md) *(Documentação que conduz qualquer pessoa a configurar as dependências da Raylib, clonar o repositório e compilar o ambiente local sem erros).*
 
 ---
