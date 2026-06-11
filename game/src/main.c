@@ -46,6 +46,14 @@ static int gBackgroundCurrentFrame = 0;
 static int gBackgroundFrameCounter = 0;
 static bool gBackgroundLoaded = false;
 
+// Músicas do jogo. Uma fica para o menu e a outra para as fases da partida.
+static Music gMenuMusic = {0};
+static Music gGameMusic = {0};
+static bool gAudioReady = false;
+static bool gMenuMusicLoaded = false;
+static bool gGameMusicLoaded = false;
+static int gCurrentMusicMode = 0;
+
 
 static float gScreenScale = 1.0f;
 static Vector2 gScreenOffset = {0.0f, 0.0f};
@@ -90,6 +98,87 @@ static bool Clicked(Rectangle rect) {
 
 static bool Hovered(Rectangle rect) {
     return CheckCollisionPointRec(GetVirtualMousePosition(), rect);
+}
+
+// Procura um arquivo primeiro na pasta do executável e depois no caminho com game/.
+static bool FindAssetPath(char *output, size_t outputSize, const char *relativePath) {
+    if (output == NULL || outputSize == 0 || relativePath == NULL) return false;
+
+    snprintf(output, outputSize, "%s", relativePath);
+    if (FileExists(output)) return true;
+
+    snprintf(output, outputSize, "game/%s", relativePath);
+    if (FileExists(output)) return true;
+
+    output[0] = '\0';
+    return false;
+}
+
+// Carrega as duas trilhas sonoras. Se os arquivos não existirem, o jogo continua normal.
+static void LoadGameMusic(void) {
+    InitAudioDevice();
+    gAudioReady = IsAudioDeviceReady();
+
+    if (!gAudioReady) return;
+
+    char menuPath[256];
+    char gamePath[256];
+
+    if (FindAssetPath(menuPath, sizeof(menuPath), "assets/audio/diazero-soundtrack-menu.wav")) {
+        gMenuMusic = LoadMusicStream(menuPath);
+        gMenuMusicLoaded = IsMusicValid(gMenuMusic);
+        if (gMenuMusicLoaded) {
+            gMenuMusic.looping = true;
+            SetMusicVolume(gMenuMusic, 0.45f);
+        }
+    }
+
+    if (FindAssetPath(gamePath, sizeof(gamePath), "assets/audio/diazero-soundtrack-loop.wav")) {
+        gGameMusic = LoadMusicStream(gamePath);
+        gGameMusicLoaded = IsMusicValid(gGameMusic);
+        if (gGameMusicLoaded) {
+            gGameMusic.looping = true;
+            SetMusicVolume(gGameMusic, 0.42f);
+        }
+    }
+}
+
+// Troca a música conforme a tela atual. Menu, histórico e ajuda usam a música do menu.
+static void UpdateMusicForScreen(Screen screen) {
+    if (!gAudioReady) return;
+
+    int desiredMode = 2;
+    if (screen == SCREEN_MENU || screen == SCREEN_HISTORY || screen == SCREEN_HELP) {
+        desiredMode = 1;
+    }
+
+    if (desiredMode != gCurrentMusicMode) {
+        if (gCurrentMusicMode == 1 && gMenuMusicLoaded) StopMusicStream(gMenuMusic);
+        if (gCurrentMusicMode == 2 && gGameMusicLoaded) StopMusicStream(gGameMusic);
+
+        gCurrentMusicMode = desiredMode;
+
+        if (gCurrentMusicMode == 1 && gMenuMusicLoaded) PlayMusicStream(gMenuMusic);
+        if (gCurrentMusicMode == 2 && gGameMusicLoaded) PlayMusicStream(gGameMusic);
+    }
+
+    if (gCurrentMusicMode == 1 && gMenuMusicLoaded) UpdateMusicStream(gMenuMusic);
+    if (gCurrentMusicMode == 2 && gGameMusicLoaded) UpdateMusicStream(gGameMusic);
+}
+
+// Libera as músicas antes de fechar o jogo.
+static void UnloadGameMusic(void) {
+    if (gMenuMusicLoaded) UnloadMusicStream(gMenuMusic);
+    if (gGameMusicLoaded) UnloadMusicStream(gGameMusic);
+
+    if (gAudioReady) {
+        CloseAudioDevice();
+    }
+
+    gAudioReady = false;
+    gMenuMusicLoaded = false;
+    gGameMusicLoaded = false;
+    gCurrentMusicMode = 0;
 }
 
 static void DrawWrappedText(const char *text, int x, int y, int fontSize, int maxWidth, Color color) {
@@ -888,6 +977,7 @@ int main(void) {
         ChangeDirectory(appDir);
     }
     History_EnsureFile();
+    LoadGameMusic();
 
     const char *iconPath = "assets/icons/diazero_icon.png";
     if (!FileExists(iconPath)) {
@@ -931,6 +1021,7 @@ int main(void) {
 
     while (!exitRequested) {
         UpdateFullscreenTransform();
+        UpdateMusicForScreen(screen);
 
         if (IsKeyPressed(KEY_F11)) {
             ToggleFullscreen();
@@ -1052,6 +1143,8 @@ int main(void) {
     if (gBackgroundImage.data != NULL) {
         UnloadImage(gBackgroundImage);
     }
+
+    UnloadGameMusic();
 
     CloseWindow();
     return 0;
